@@ -7,8 +7,13 @@ function Game(){
 	this.paddle;   // la raqueta
   this.ball;     // la pilota
 	this.totxo;
-		
+
+
+	  ////////////////////////
+     //  Global Variables  //
+    ////////////////////////
 	this.t=0;      // el temps
+    this.loseCondition=false;
 				
 	// Events del teclat
 	this.key={
@@ -57,7 +62,7 @@ Game.prototype.draw = function(){
 	 
    this.context.clearRect(0, 0, this.width, this.height);
 		
-		this.totxo.draw(this.context);		
+    this.totxo.draw(this.context);
     this.paddle.draw(this.context);
     this.ball.draw(this.context);
 };
@@ -199,18 +204,42 @@ Ball.prototype.update = function(dt){
 			dtXoc=k*dt;  // temps que queda
 			xoc=true;
 		}
+
 		
-		
-		// Xoc amb la raqueta
-
-
-
+    // Xoc amb la raqueta
+    var pXoc=Utilitats.interseccioSegmentRectangle(trajectoria, {
+        p: {x:game.paddle.x-this.radi,y:game.paddle.y-this.radi},
+        w:game.paddle.width+2*this.radi,
+        h:game.paddle.height+2*this.radi});
 
     // Xoc amb el mur
-		// xoc amb un totxo
-    var pXoc=Utilitats.interseccioSegmentRectangle(trajectoria,{p:{x:game.totxo.x-this.radi,y:game.totxo.y-this.radi},
-                                                                w:game.totxo.w+2*this.radi,
-																																h:game.totxo.h+2*this.radi});
+
+if(this.y>=(game.canvas.height-game.paddle.height)){
+    game.loseCondition=true;
+    console.log("Out of Bounds");
+}
+
+
+
+      ///////////////////////////
+     //  Alteració velocitat  //
+    ///////////////////////////
+
+    // Todo: Adjust left-half-to-right reflection (currently left-half to left)
+    if(pXoc){
+        this.vx=100+(((this.x-(game.paddle.x + 150))/(game.paddle.x + 150))*1000);
+    }
+
+
+    // xoc amb un totxo
+    else {
+        pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
+            p: {x: game.totxo.x - this.radi, y: game.totxo.y - this.radi},
+            w: game.totxo.w + 2 * this.radi,
+            h: game.totxo.h + 2 * this.radi
+        });
+    }
+
 	  if(pXoc){
 			xoc=true;
 			this.x=pXoc.p.x; 			
