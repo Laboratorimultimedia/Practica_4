@@ -13,13 +13,70 @@ function Game(){
      //  Global Variables  //
     ////////////////////////
 	this.t=0;      // el temps
+	this.start=true;
     this.loseCondition=false;
-				
+	
+	// Timer
+	
+	this.temporitzador;
+	this.resetTime=true;
+
+	// Game Mode
+
+	this.NORMAL_MODE = 0;
+	this.MULTIPLAYER_MODE = 1;
+	this.SURVIVAL_MODE = 2;
+	this.TIMED_MODE = 3;
+
+	this.mode;
+
 	// Events del teclat
 	this.key={
 		 RIGHT:{code: 39, pressed:false}, 
 		 LEFT :{code: 37, pressed:false}
 	};
+
+
+	this.rellotge = function rellotge() { //cronometre o temporitzador
+		if(game.start && game.mode==game.SURVIVAL_MODE || game.mode== game.TIMED_MODE) {
+			if(game.resetTime){
+				console.log("Timer Reseted");
+				if(game.mode==game.TIMED_MODE){
+					this.segons=60;
+					this.seg1=0;
+					this.seg2=0;
+					this.min=1;
+					game.resetTime=false;
+				}
+				else{
+					this.segons=0;
+					this.seg1=0;
+					this.seg2=0;
+					this.min=0;
+					game.resetTime=false;
+				}
+
+			}
+			if (this.segons == 0 && game.mode==game.TIMED_MODE) {
+				this.start=false;
+			}
+			else if(game.mode==game.TIMED_MODE){
+				this.segons--;
+			}
+			else{
+				this.segons++;
+			}
+
+
+			this.min=parseInt(this.segons/60);
+			this.seg1=parseInt((this.segons%60)/10);
+			this.seg2=parseInt((this.segons%60)-this.seg1*10);
+			document.getElementById('seg2').src ="data/rellotge/"+seg2+".jpg";
+			document.getElementById('seg1').src ="data/rellotge/"+seg1+".jpg";
+			document.getElementById('minut').src ="data/rellotge/"+min+".jpg";
+		}
+	}
+
 
 }
 
@@ -83,18 +140,21 @@ var game;
 $(document).ready(function(){
 	game= new Game();  	   // Inicialitzem la instància del joc
   game.inicialitzar();   // estat inicial del joc
-	
+
+
+	game.mode=game.TIMED_MODE;
+
+	setInterval(game.rellotge,1000); //cada 1 segon executa la funcio rellotge
 });
+
+
 
 function mainLoop(){
 
     game.update();
     game.draw();
 		requestAnimationFrame(mainLoop);
-
 }
-
-
 
 ///////////////////////////////////    Raqueta
 function Paddle(){
@@ -132,11 +192,29 @@ function Ball(){
 }
 
 Ball.prototype.update = function(dt){
-	  var dtXoc;      // temps empleat fins al xoc
+		var dtXoc;      // temps empleat fins al xoc
 		var xoc=false;  // si hi ha xoc en aquest dt
 		var k;          // proporció de la trajectoria que supera al xoc
 		var trajectoria={};
 		trajectoria.p1={x:this.x, y:this.y};
+
+
+	  ////////////////////////
+	 ///	Update Ball	  ///
+	///////////////////////
+
+
+	if(Utilitats.updateBall){
+
+		this.vy+=Utilitats.extraVY;
+
+		this.radi=Utilitats.newRadi;
+
+		Utilitats.updateBall=false;
+	}
+
+
+
 //		var deltaX=this.vx*dt; 
 //		var deltaY=this.vy*dt; 
 		trajectoria.p2={x:this.x + this.vx*dt, y:this.y + this.vy*dt};  // nova posició de la bola
@@ -212,11 +290,22 @@ Ball.prototype.update = function(dt){
         w:game.paddle.width+2*this.radi,
         h:game.paddle.height+2*this.radi});
 
+	// Costat dret
+
+	// Xoc amb la raqueta
+	var pXoc=Utilitats.interseccioSegmentRectangle(trajectoria, {
+		p: {x:game.paddle.x-this.radi,y:game.paddle.y-this.radi},
+		w:game.paddle.width+2*this.radi,
+		h:game.paddle.height+2*this.radi});
+
+	// Costat esquerra
+
+
+
     // Xoc amb el mur
 
 if(this.y>=(game.canvas.height-game.paddle.height)){
     game.loseCondition=true;
-    console.log("Out of Bounds");
 }
 
 
@@ -227,7 +316,7 @@ if(this.y>=(game.canvas.height-game.paddle.height)){
 
     // Todo: Adjust left-half-to-right reflection (currently left-half to left)
     if(pXoc){
-        this.vx=100+(((this.x-(game.paddle.x + 150))/(game.paddle.x + 150))*1000);
+        this.vx= 100 +(((this.x-(game.paddle.x + 150))/(game.paddle.x + 150))*1000);
     }
 
 
@@ -302,6 +391,38 @@ Totxo.prototype.draw = function(ctx){
 //////////////////////////////////////////////////////////////////////
 // Utilitats
 var Utilitats={};
+
+this.baseVX=100;
+this.baseVY=310;
+this.updateBall=false;
+this.extraVX=0;
+this.extraVY=0;
+this.newRadi=10;
+
+
+Utilitats.progresion = function progresion() { //cronometre temporitzador
+
+	if(game.mode == (SURVIVAL_MODE))
+	switch (game.time){
+		case 7: {
+			Utilitats.baseVX+=50;
+			Utilitats.baseVY+=50;
+
+			Utilitats.extraVX=50;
+			Utilitats.extraVY=50;
+		};break;
+		case 14:{
+			Utilitats.newRadi=5;
+		}
+		default:
+	}
+	updateBall=true;
+}
+  //////////////////////////////////////
+ ///	INTERSECCIONS - NO TOCAR	///
+//////////////////////////////////////
+
+
 Utilitats.esTallen = function(p1,p2,p3,p4){
 	function check(p1,p2,p3){
 		return (p2.y-p1.y)*(p3.x-p1.x) < (p3.y-p1.y)*(p2.x-p1.x);
@@ -421,7 +542,6 @@ Utilitats.interseccioSegmentRectangle = function(seg,rect){  // seg={p1:{x:,y:},
 		if(vora){
 			return {p:pImin,vora:vora}
 		}
-
 	
 }
 
