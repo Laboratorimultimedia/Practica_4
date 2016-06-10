@@ -5,8 +5,11 @@ alerts suck
 Changelog v0.1
 
 * Merged collision system with the level generator
+
 * Added extended interface, with animations for the transitions
+
 * Countdown / Countup timers
+
 * 3 Gamemodes basic structure implemented:
   * Normal Mode 
   * Timed Mode
