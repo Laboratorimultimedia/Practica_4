@@ -1,5 +1,5 @@
 ///////////////////////////////////    Objecte game
-function Game(){
+function Game(mode){
 	this.AMPLADA_TOTXO=40; this.ALÇADA_TOTXO=20; // MIDES DEL TOTXO EN PÍXELS
 	this.canvas,  this.context;       // context per poder dibuixar en el Canvas
   this.width, this.height;          // mides del canvas
@@ -13,10 +13,11 @@ function Game(){
      //  Global Variables  //
     ////////////////////////
 	this.t=0;      // el temps
-	this.start=true;
+	this.start=false;
     this.loseCondition=false;
 	this.currentLv=1;
-
+	this.naturalReflection=false;
+	
 	// Timer
 	
 	this.temporitzador;
@@ -25,11 +26,11 @@ function Game(){
 	// Game Mode
 
 	this.NORMAL_MODE = 0;
-	this.MULTIPLAYER_MODE = 1;
+	this.MULTIPLAYER_MODE = 3;
 	this.SURVIVAL_MODE = 2;
-	this.TIMED_MODE = 3;
+	this.TIMED_MODE = 1;
 
-	this.mode;
+	this.mode=mode;
 
 	// Events del teclat
 	this.key={
@@ -39,6 +40,7 @@ function Game(){
 
 
 	this.rellotge = function rellotge() { //cronometre o temporitzador
+		console.log(game.mode);
 		if(game.start && game.mode==game.SURVIVAL_MODE || game.mode== game.TIMED_MODE) {
 			if(game.resetTime){
 				console.log("Timer Reseted");
@@ -58,11 +60,11 @@ function Game(){
 				}
 
 			}
-			if (this.segons == 0 && game.mode==game.TIMED_MODE) {
-				this.start=false;
-			}
-			else if(game.mode==game.TIMED_MODE){
-				this.segons--;
+			if(game.mode==game.TIMED_MODE){
+				if(this.segons == 0){
+					this.start=false;
+				}
+				else this.segons--;
 			}
 			else{
 				this.segons++;
@@ -82,6 +84,8 @@ function Game(){
 }
 
 Game.prototype.inicialitzar = function(){
+	
+
 		this.canvas = document.getElementById("game");
     this.width = this.AMPLADA_TOTXO*15;  // 15 totxos com a màxim d'amplada
 		this.canvas.width = this.width;
@@ -142,13 +146,11 @@ Game.prototype.update = function(){
 // Comença el programa
 var game;
 $(document).ready(function(){
-	game= new Game();  	   // Inicialitzem la instància del joc
-  game.inicialitzar();   // estat inicial del joc
-
-
-	game.mode=game.TIMED_MODE;
-
-	setInterval(game.rellotge,1000); //cada 1 segon executa la funcio rellotge
+	$("#menu").show();
+	$("#principal").hide();
+	$("#gameMode").hide();
+	$("#settings").hide();
+	$("#instructions").hide();
 });
 
 
@@ -162,7 +164,7 @@ function mainLoop(){
 
 ///////////////////////////////////    Raqueta
 function Paddle(){
-    this.width = 300;
+    this.width = 150;
     this.height = 20;
 		this.x = game.width/2 - this.width/2;
     this.y = game.height-50;
@@ -314,10 +316,12 @@ if(this.y>=(game.canvas.height-game.paddle.height)){
     ///////////////////////////
 
     // Todo: Adjust left-half-to-right reflection (currently left-half to left)
-    if(pXoc){
-        this.vx= 100 +(((this.x-(game.paddle.x + 150))/(game.paddle.x + 150))*1000);
-    }
 
+if(!game.naturalReflection) {
+	if (pXoc) {
+		this.vx = 150 + (((this.x - (game.paddle.x + 75)) / (game.paddle.x + 75)) * 1500);
+	}
+}
 
 	else if(XocRaqueta){
 		
@@ -508,7 +512,7 @@ this.newRadi=10;
 
 Utilitats.progresion = function progresion() { //cronometre temporitzador
 
-	if(game.mode == (SURVIVAL_MODE))
+	if(game.mode == (game.SURVIVAL_MODE))
 	switch (game.time){
 		case 7: {
 			Utilitats.baseVX+=50;
@@ -655,3 +659,117 @@ Utilitats.interseccioSegmentRectangle = function(seg,rect){  // seg={p1:{x:,y:},
 
 
 
+
+
+     ///////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+   /////////////////////////////////////////////////////////////////////
+  /////////////////
+ /// INTERFACE ///
+/////////////////
+
+
+
+function gameStart(mode){
+
+	console.log(mode)
+
+	if(mode==1) {
+		$("#principal").css("background-image", "url(./data/BG.timed.jpg");
+	}
+	else if(mode==2) $("#principal").css("background-image", "url(./data/BG.survival.jpg");
+	else{
+	 $("#principal").css("background-image", "url(./data/BG.normal.jpg");
+	}
+
+	// TODO: Config settings
+	
+	game= new Game(mode);  	   // Inicialitzem la instància del joc
+	game.inicialitzar();   // estat inicial del joc
+	setInterval(game.rellotge,1000); //cada 1 segon executa la funcio rellotge
+	game.start=true;
+
+}
+
+
+$("#new_game").click(function(e) {
+
+	$("#gameMode").show("slide");
+	$("#main").hide(400);
+});
+
+$("#back_gameMode").click(function(e) {
+
+	$("#main").show(400);
+	$("#gameMode").hide("slide");
+
+	
+});
+
+$("#normal").click(function(e) {
+
+	gameStart(0);
+
+	$("#menu").hide();
+	$("#principal").show("puff",0,1000);
+	$("#rellotge").hide();
+
+});
+
+$("#timed").click(function(e) {
+
+	gameStart(1);
+
+	$("#menu").hide();
+	$("#principal").show("puff",0,1000);
+
+
+});
+
+$("#survival").click(function(e) {
+
+	gameStart(2);
+
+	$("#menu").hide();
+	$("#principal").show("puff",0,1000);
+
+});
+
+$("#instructionsButton").click(function(e) {
+
+
+	$("#instructions").show("slide");
+	$("#main").hide(400);
+
+});
+
+$("#back_instructions").click(function(e) {
+
+	$("#main").show(400);
+	$("#instructions").hide("slide");
+
+
+});
+
+$("#settingsButton").click(function(e) {
+
+
+	$("#settings").show("slide");
+	$("#main").hide(400);
+
+});
+
+$("#back_settings").click(function(e) {
+
+	$("#main").show(400);
+	$("#settings").hide("slide");
+
+
+});
+
+$("#back_canvas").click(function(e) {
+	$("#menu").show(400);
+	$("#principal").hide("slide");
+	game.start=false;
+
+});

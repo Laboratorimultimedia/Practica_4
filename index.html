@@ -4,8 +4,11 @@
 <meta charset="utf-8">
 <title>Breakout amb canvas</title>
 <style>
+
+
+
 #principal{
-	width: 960px;
+	width: 650px;
 	margin: 0 auto;
 }
 #joc{
@@ -13,26 +16,115 @@
 	margin-top: 20px;
 }
 #game {
-	background-color: #eee;  /* color gris clar  */
+	background-color: transparent;
 	border: #666 50px solid;
 	border-bottom-width: 0;
 	display: block;
 	margin: 0 auto;
 }
+    #rellotge{
+        margin-left: 40%;
+    }
+
+body{
+    color:red;
+    background-color: #000000;
+}
+
+
+#gameMode{
+    border-style:outset;
+    border-width: 5px;
+    width:600px;
+    text-align: center;
+}
+
+#instructions{
+     border-style:outset;
+     border-width: 5px;
+     width:800px;
+     text-align: center;
+    font-size:17px;
+ }
+
+#settings{
+    border-style:outset;
+    border-width: 5px;
+    width:600px;
+    text-align: center;
+}
+
+#main{
+    margin-left: auto; width: 70%;
+}
+
+
 </style>
 </head>
 
 <body>
+
+<div id="menu">
+    <div id="main">
+    <div id="head">
+        <h1>Breakout Master</h1>
+        <h3>by David Junquero, Jan Jimenez & Joan Figueres</h3>
+    </div>
+        <button id="new_game">New Game</button>
+        <br>
+        <br>
+        <button id="settingsButton">Settings</button>
+        <br>
+        <br>
+        <button id="instructionsButton">Instructions</button>
+    </div>
+
+    <div id="gameMode">
+        <button id="back_gameMode" style="float:right">X</button>
+        <br>
+        <h2>Select a game mode</h2>
+        <input type="image" id="normal" name="normal" value="normal" src="data/banner.normal.png" style="height:200px;width:600px"/>
+        <br>
+        <input type="image" id="timed" name="timed" value="timed" src="data/banner.timed.png"style="height:200px;width:600px"/>
+        <br>
+        <input type="image" id="survival" name="survival" value="survival" src="data/banner.survival.png"style="height:200px;width:600px"/>
+    </div>
+
+    <div id="settings">
+        <button id=back_settings style="float:right">X</button>
+        <br>
+        <h2>Settings</h2>
+        <br><br>
+        <input type="radio" id="naturalReflection" name="naturalReflection"> Natural Reflection<br>
+    </div>
+
+    <div id="instructions">
+        <button id="back_instructions" style="float:right">X</button>
+        <br>
+        <h1>Instructions</h1>
+        <br><br>
+        <img src="data/ins1.png" alt="Instruction 1" style="width:800px;height:400px;">
+        <p> Use [<-] & [->] keys to move the racket </p>
+        <img src="data/ins2.png" alt="Instruction 2" style="width:800px;height:400px;">
+        <p> Avoid the ball passing through the racket's height. For each time it does, you lose a life. </p>
+    </div>
+
+</div>
+
+
 <div id="principal">
-	<div id="rellotge">
-		<img id="minut" src="data/rellotge/0.jpg">
-		<img src="data/rellotge/dos_puntos.png" width="45" height="60">
-		<img id="seg1" src="data/rellotge/0.jpg">
-		<img id="seg2" src="data/rellotge/0.jpg">
-	</div>
+
   <div id="joc">
     <canvas id="game"></canvas>
   </div>
+
+    <div id="rellotge">
+        <img id="minut" src="data/rellotge/0.jpg">
+        <img src="data/rellotge/dos_puntos.png" width="45" height="60">
+        <img id="seg1" src="data/rellotge/0.jpg">
+        <img id="seg2" src="data/rellotge/0.jpg">
+    </div>
+    <button id="back_canvas" style="float:left">X</button>
 </div>
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/breakout.js" defer></script>
