@@ -2,7 +2,7 @@
 Breakout,
 alerts suck
 
-Changelog v0.1
+# Changelog v0.1
 
 * Merged collision system with the level generator
 
@@ -15,6 +15,6 @@ Changelog v0.1
   * Timed Mode
   * Survival Mode
 
-# Known Issues:
+## Known Issues:
 
 * Going back from a game into another accelerates the timer and the racket's speed without control.
