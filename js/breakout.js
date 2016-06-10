@@ -1,19 +1,14 @@
 ///////////////////////////////////    Objecte game
 function Game(){
-	this.AMPLADA_TOTXO=50; this.ALÇADA_TOTXO=25; // MIDES DEL TOTXO EN PÍXELS
-	this.canvas,  this.context;       // context per poder dibuixar en el Canvas
+	this.AMPLADA_TOTXO=40; this.ALÇADA_TOTXO=20; // MIDES DEL TOTXO EN PÍXELS
+	// this.canvas,  this.context;       // context per poder dibuixar en el Canvas
   this.width, this.height;          // mides del canvas
-				
+	this.NIVELLS= new Array();
 	this.paddle;   // la raqueta
   this.ball;     // la pilota
 	this.totxo;
-
-
-	  ////////////////////////
-     //  Global Variables  //
-    ////////////////////////
+		
 	this.t=0;      // el temps
-    this.loseCondition=false;
 				
 	// Events del teclat
 	this.key={
@@ -32,8 +27,13 @@ Game.prototype.inicialitzar = function(){
     this.context = this.canvas.getContext("2d");
 			
     this.paddle = new Paddle();
-    this.ball = new Ball();
-		this.totxo= new Totxo(200,200,400,200,"#bbf");
+	this.ball = new Ball();
+	//Executar Nivell Totxo
+	this.mur = new Mur(1);
+	this.llegirNivells();
+	this.mur.construir(1);//per provar
+	//this.totxo= new Totxo(200,200,400,200,"#bbf");
+
 
 			
 		// Events amb jQuery
@@ -62,7 +62,7 @@ Game.prototype.draw = function(){
 	 
    this.context.clearRect(0, 0, this.width, this.height);
 		
-    this.totxo.draw(this.context);
+	this.mur.draw(this.context);
     this.paddle.draw(this.context);
     this.ball.draw(this.context);
 };
@@ -204,42 +204,17 @@ Ball.prototype.update = function(dt){
 			dtXoc=k*dt;  // temps que queda
 			xoc=true;
 		}
-
 		
-    // Xoc amb la raqueta
-    var pXoc=Utilitats.interseccioSegmentRectangle(trajectoria, {
-        p: {x:game.paddle.x-this.radi,y:game.paddle.y-this.radi},
-        w:game.paddle.width+2*this.radi,
-        h:game.paddle.height+2*this.radi});
+		
+		// Xoc amb la raqueta
+
+
+
 
     // Xoc amb el mur
-
-if(this.y>=(game.canvas.height-game.paddle.height)){
-    game.loseCondition=true;
-    console.log("Out of Bounds");
-}
-
-
-
-      ///////////////////////////
-     //  Alteració velocitat  //
-    ///////////////////////////
-
-    // Todo: Adjust left-half-to-right reflection (currently left-half to left)
-    if(pXoc){
-        this.vx=100+(((this.x-(game.paddle.x + 150))/(game.paddle.x + 150))*1000);
-    }
-
-
-    // xoc amb un totxo
-    else {
-        pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
-            p: {x: game.totxo.x - this.radi, y: game.totxo.y - this.radi},
-            w: game.totxo.w + 2 * this.radi,
-            h: game.totxo.h + 2 * this.radi
-        });
-    }
-
+		// xoc amb un totxo
+   /* var pXoc=Utilitats.interseccioSegmentRectangle(trajectoria,{p:{x:game.totxo.x-this.radi,y:game.totxo.y-this.radi},
+                                                                w:game.totxo.w+2*this.radi, h:game.totxo.h+2*this.radi});
 	  if(pXoc){
 			xoc=true;
 			this.x=pXoc.p.x; 			
@@ -256,10 +231,10 @@ if(this.y>=(game.canvas.height-game.paddle.height)){
 
 
 
-
+*/
 
     // actualitzem la posició de la bola
-		if(xoc){
+		if(false){
 			this.update(dtXoc);  // crida recursiva
 		}
 		else{
@@ -283,9 +258,9 @@ Ball.prototype.draw = function(ctx){
 };
 
 ///////////////////////////////////    Totxo
-function Totxo(x,y,w,h,color){
+function Totxo(x,y,color){
 		this.x=x; this.y=y;         // posició, en píxels respecte el canvas
-		this.w=w; this.h=h;         // mides
+		this.w=game.AMPLADA_TOTXO; this.h=game.ALÇADA_TOTXO;         // mides
 		this.color=color;
 }
  
@@ -297,6 +272,87 @@ Totxo.prototype.draw = function(ctx){
 		ctx.strokeRect(this.x, this.y, this.w, this.h);
 		ctx.restore();	
 };
+function Mur(n){
+	this.nivell=n;
+	this.totxos=[];
+}
+Mur.prototype.construir=function (n) {
+	this.nivell=n;
+	var nivell=game.NIVELLS[n];
+	for(var i=0; i<nivell.totxos.length;i++){
+		var linia=nivell.totxos[i];
+		for(var j=0; j<linia.length; j++){
+			if(linia.charAt(j)!=" "){
+				var totxo=new Totxo();
+				totxo.x=j*game.AMPLADA_TOTXO;
+				totxo.y=i*game.ALÇADA_TOTXO;
+				totxo.color=nivell.colors[linia.charAt(j)];
+				this.totxos.push(totxo);
+			}
+		}
+	}
+}
+Mur.prototype.draw = function(ctx){
+	for(var i=0; this.totxos.length>i; i++){
+		var totxo = this.totxos[i];
+		totxo.draw(ctx);
+	}
+
+}
+Game.prototype.llegirNivells = function(){ //Index1
+	this.NIVELLS = [
+		{
+			colors: {
+				t: "#F77", // taronja
+				c: "#4CF", // blue cel
+				v: "#8D1", // verd
+				e: "#D30", // vermell
+				l: "#00D", // blau
+				r: "#F7B", // rosa
+				p: "#BBB" // plata
+			},
+			totxos: [
+				"           ",
+				"           ",
+				" p         ",
+				" ttttt     ",
+				" ccccccc   ",
+				" vvvvvvvvv ",
+				" eeeeeeeee ",
+				" lllllllll ",
+				" r r r r r "
+			]
+		},
+		{
+			colors: {
+				b: "#FFF", // blanc
+				t: "#F77", // taronja
+				c: "#4CF", // blue cel
+				v: "#8D1", // verd
+				e: "#D30", // vermell
+				l: "#00D", // blau
+				r: "#F7B", // rosa
+				g: "#F93", // groc
+				p: "#BBB", // plata
+				d: "#FB4" // dorat
+			},
+			totxos: [
+				"",
+				" ddd ",
+				" pppp ",
+				" ttttt ",
+				" cccccc ",
+				" vvvvvvv ",
+				" eeeeeeee ",
+				" lllllllll ",
+				" rrrrrrrrrr ",
+				" ggggggggggg ",
+				" bbbbbbbbbbbb ",
+				" ddddddddddddd "
+			]
+		}
+	];
+}
 
 
 //////////////////////////////////////////////////////////////////////
