@@ -8,9 +8,9 @@ Changelog v0.1
 * Added extended interface, with animations for the transitions
 * Countdown / Countup timers
 * 3 Gamemodes basic structure implemented:
-* # Normal Mode 
-* # Timed Mode
-* # Survival Mode
+* * Normal Mode 
+* * Timed Mode
+* * Survival Mode
 
 # Known Issues:
 
