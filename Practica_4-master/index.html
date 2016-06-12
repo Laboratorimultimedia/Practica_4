@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Breakout amb canvas</title>
+<style>
+	body{
+		text-align:center;
+		background-image: url("./images/retrobackground.jpg");
+		background-color: #000000;
+	}
+	#principal{
+		width: 960px;
+		margin: 0 auto;
+	}
+	#joc{
+		position:relative;
+	}
+	#game {
+		background-color: #eee;  /* color gris clar  */
+		border: #666 50px solid;
+		border-bottom-width: 0;
+		display: block;
+		margin: 0 auto;
+		opacity: 0.9;
+		border-radius: 30px;
+	}
+	#menu {
+		background-color: chartreuse;
+		heigth: 500px;
+	}
+	#header {
+		padding: 25px 10px;
+		border-bottom: 0px;
+		overflow: no-content;
+		min-width: 400px;
+		background-color: black;
+		color: white;
+		text-align: center;
+		border-radius: 10px;
+		margin-bottom: 5px;
+	}
+
+	div#header div {
+		display: inline-block;
+		padding: 1% 0;
+		margin: 0 2%;
+		text-align: center;
+		border: 4px dashed; /* Useful for positioning */
+		font-size: 2em;
+	}
+
+	#logo {
+		color: #08a3d9;
+		width: 20%;
+		border-color: red;
+	}
+
+	#header-middle {
+		width: 40%;
+		border-color: green;
+	}
+
+	#ranking {
+		width: 20%;
+		border-color: blue;
+	}
+	#menu {
+		padding: 25px 10px;
+		border-bottom: 0px;
+		overflow: no-content;
+		min-width: 400px;
+		background-color: black;
+		color: white;
+		text-align: center;
+		border-radius: 10px;
+		margin-bottom: 5px;
+
+	}
+</style>
+</head>
+
+<body>
+
+<div id="principal">
+		<div id="header">
+			<div id="logo">
+				nivell:
+				<form oninput="amount.value=rangeInput.value">
+					<input type="number" id="inputFiles" name="rangeInput" min="1" max="5">
+				</form>
+				<input type="button" id="startgame" onclick="alert('game started!')" value="Start game">
+			</div>
+			<div id="header-middle">
+				nick:
+				<input type="text" name="nick">
+				</br>
+				Marcador: 0 punts
+				</br>
+				Intents restants:
+				<img src="./images/heart.png">
+				<img src="./images/heart.png">
+				<img src="./images/heart.png">
+				<img src="./images/heart.png">
+			</div>
+			<div id="ranking">
+				Top 3:
+			</div>
+		</div>
+	<div id="joc">
+		<canvas id="game"></canvas>
+	</div>
+</div>
+<script src="js/jquery-1.12.3.min.js"></script>
+<script src="js/breakout.js" defer></script>
+</body>
+</html>
