@@ -2,6 +2,11 @@
 Breakout,
 alerts suck
 
+# **Changelog v0.2**
+
+* **Added ingame header interface with level selector, ingame info and user ranking (to be implemented)**
+
+ <br><br><br><br>
 # **Changelog v0.1**
 
 * **Merged collision system with the level generator**
