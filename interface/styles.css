@@ -1,0 +1,104 @@
+#principal{
+    width: 1200px;
+    margin: 0 auto;
+    border-style:outset;
+    border-width: 5px;
+    border-color: black;
+}
+#joc{
+    position:relative;
+    margin-top: 20px;
+}
+#game {
+    background-color: transparent;
+    border: #666 50px solid;
+    border-bottom-width: 0;
+    display: block;
+    margin: 0 auto;
+}
+#rellotge{
+    margin-left: 40%;
+}
+
+body{
+    color:black;
+    background-image: url("../data/retrobackground.jpg");
+    background-color: white;
+}
+
+
+#gameMode{
+    border-style:outset;
+    border-width: 5px;
+    width:600px;
+    text-align: center;
+}
+
+#instructions{
+    border-style:outset;
+    border-width: 5px;
+    width:800px;
+    text-align: center;
+    font-size:17px;
+}
+
+#settings{
+    border-style:outset;
+    border-width: 5px;
+    width:600px;
+    text-align: center;
+}
+
+#main{
+    margin-left: auto; width: 70%;
+}
+
+
+#header {
+    padding: 25px 10px;
+    border-bottom: 0;
+    overflow: no-content;
+    min-width: 600px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+div#header div {
+    display: inline-block;
+    padding: 1% 0;
+    margin: 0 2%;
+    text-align: center;
+    border: 4px dashed; /* Useful for positioning */
+    font-size: 2em;
+}
+
+#logo {
+    color: #08a3d9;
+    width: 20%;
+    border-color: red;
+}
+
+#header-middle {
+    width: 40%;
+    border-color: green;
+}
+
+#ranking {
+    width: 20%;
+    border-color: blue;
+}
+#menu {
+    padding: 25px 10px;
+    border-bottom:0;
+    overflow: no-content;
+    min-width: 600px;
+    background-color: transparent;
+    color: black;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 5px;
+
+}
