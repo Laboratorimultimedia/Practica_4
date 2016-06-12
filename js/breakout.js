@@ -169,7 +169,7 @@ function Paddle(){
 		this.x = game.width/2 - this.width/2;
     this.y = game.height-50;
 		this.vx = 10;
-		this.color = "#fbb"; // vermell
+		this.color = "#0f0";
 }
 
 Paddle.prototype.update = function(){
@@ -672,8 +672,6 @@ Utilitats.interseccioSegmentRectangle = function(seg,rect){  // seg={p1:{x:,y:},
 
 function gameStart(mode){
 
-	console.log(mode)
-
 	if(mode==1) {
 		$("#principal").css("background-image", "url(./data/BG.timed.jpg");
 	}
@@ -712,7 +710,6 @@ $("#normal").click(function(e) {
 
 	$("#menu").hide();
 	$("#principal").show("puff",0,1000);
-	$("#rellotge").hide();
 
 });
 

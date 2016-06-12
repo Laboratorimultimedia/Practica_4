@@ -8,8 +8,11 @@
 
 
 #principal{
-	width: 650px;
+	width: 1200px;
 	margin: 0 auto;
+    border-style:outset;
+    border-width: 5px;
+    border-color: black;
 }
 #joc{
 	position:relative;
@@ -27,8 +30,9 @@
     }
 
 body{
-    color:red;
-    background-color: #000000;
+    color:black;
+    background-image: url("./data/retrobackground.jpg");
+    background-color: white;
 }
 
 
@@ -56,6 +60,56 @@ body{
 
 #main{
     margin-left: auto; width: 70%;
+}
+
+
+#header {
+    padding: 25px 10px;
+    border-bottom: 0px;
+    overflow: no-content;
+    min-width: 600px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+div#header div {
+    display: inline-block;
+    padding: 1% 0;
+    margin: 0 2%;
+    text-align: center;
+    border: 4px dashed; /* Useful for positioning */
+    font-size: 2em;
+}
+
+#logo {
+    color: #08a3d9;
+    width: 20%;
+    border-color: red;
+}
+
+#header-middle {
+    width: 40%;
+    border-color: green;
+}
+
+#ranking {
+    width: 20%;
+    border-color: blue;
+}
+#menu {
+    padding: 25px 10px;
+    border-bottom: 0px;
+    overflow: no-content;
+    min-width: 600px;
+    background-color: transparent;
+    color: black;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 5px;
+
 }
 
 
@@ -113,6 +167,31 @@ body{
 
 
 <div id="principal">
+
+    <div id="header">
+        <div id="logo">
+            nivell:
+            <form oninput="amount.value=rangeInput.value">
+                <input type="number" id="inputFiles" name="rangeInput" min="1" max="5">
+            </form>
+            <input type="button" id="startgame" onclick="alert('game started!')" value="Start game">
+        </div>
+        <div id="header-middle">
+            nick:
+            <input type="text" name="nick">
+            </br>
+            Marcador: 0 punts
+            </br>
+            Intents restants:
+            <img src="./data/heart.png">
+            <img src="./data/heart.png">
+            <img src="./data/heart.png">
+            <img src="./data/heart.png">
+        </div>
+        <div id="ranking">
+            Top 3:
+        </div>
+    </div>
 
   <div id="joc">
     <canvas id="game"></canvas>
