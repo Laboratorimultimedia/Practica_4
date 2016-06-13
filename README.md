@@ -2,6 +2,15 @@
 Breakout,
 alerts suck
 
+# **Changelog v0.3**
+
+* **Added progresive difficulty for Survival Mode. The racket gets smaller and the ball goes faster**
+* **Fixed header's level selector**
+* **Fixed an issue with racket's left side reflection**
+* **Fixed the clock becoming accelerated, although the racket is still bugged**
+* **Fixed "Natural Reflection" selector, although natural reflection does not work**
+ <br><br><br><br>
+ 
 # **Changelog v0.2**
 
 * **Added ingame header interface with level selector, ingame info and user ranking (to be implemented)**
