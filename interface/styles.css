@@ -72,7 +72,6 @@ div#header div {
     padding: 1% 0;
     margin: 0 2%;
     text-align: center;
-    border: 4px dashed; /* Useful for positioning */
     font-size: 2em;
 }
 
