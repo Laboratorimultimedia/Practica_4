@@ -24,6 +24,7 @@ body{
     color:black;
     background-image: url("../data/retrobackground.jpg");
     background-color: white;
+    font-family: Impact;
 }
 
 
@@ -94,7 +95,7 @@ div#header div {
     padding: 25px 10px;
     border-bottom:0;
     overflow: no-content;
-    min-width: 600px;
+    min-width: 1000px;
     background-color: transparent;
     color: black;
     text-align: center;
