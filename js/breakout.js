@@ -781,6 +781,11 @@ $("#back_canvas").click(function(e) {
 });
 
 $("#levelSelector").change(function(e) {
-	gameStart(0,$("#levelSelector").val());
-	$("#game").show("puff", 0, 1000);
+	if($("#levelSelector").val()==0){
+		$("#game").hide("puff", 0, 1000);
+	}
+	else {
+		gameStart(0, ($("#levelSelector").val() - 1));
+		$("#game").show("puff", 0, 1000);
+	}
 });
