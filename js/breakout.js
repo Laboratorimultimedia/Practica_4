@@ -31,7 +31,7 @@ function Game(mode){
 	this.TIMED_MODE = 1;
 
 	this.mode=mode;
-
+	this.temps=0;
 	// Events del teclat
 	this.key={
 		 RIGHT:{code: 39, pressed:false}, 
@@ -40,10 +40,10 @@ function Game(mode){
 
 
 	this.rellotge = function rellotge() { //cronometre o temporitzador
-		console.log(game.mode);
-		if(game.start && game.mode==game.SURVIVAL_MODE || game.mode== game.TIMED_MODE) {
+		if(game.start) {
 			if(game.resetTime){
 				console.log("Timer Reseted");
+				Utilitats.temps=0;
 				if(game.mode==game.TIMED_MODE){
 					this.segons=60;
 					this.seg1=0;
@@ -69,8 +69,13 @@ function Game(mode){
 			else{
 				this.segons++;
 			}
+			 ////////////////////////////////////////////////////////////////
+			/// Insert console logs here for them to be displayed each second
 
 
+
+			///////////////////////////////
+			Utilitats.temps++;
 			this.min=parseInt(this.segons/60);
 			this.seg1=parseInt((this.segons%60)/10);
 			this.seg2=parseInt((this.segons%60)-this.seg1*10);
@@ -80,10 +85,9 @@ function Game(mode){
 		}
 	}
 
-
 }
 
-Game.prototype.inicialitzar = function(){
+Game.prototype.inicialitzar = function(nivell){
 	
 
 		this.canvas = document.getElementById("game");
@@ -96,9 +100,9 @@ Game.prototype.inicialitzar = function(){
     this.paddle = new Paddle();
     this.ball = new Ball();
 	//Executar Nivell Totxo
-	this.mur = new Mur(1);
+	this.mur = new Mur(nivell);
 	this.llegirNivells();
-	this.mur.construir(1);//per provar
+	this.mur.construir(nivell);
 
 			
 		// Events amb jQuery
@@ -205,19 +209,43 @@ Ball.prototype.update = function(dt){
 		trajectoria.p1={x:this.x, y:this.y};
 
 
-	  ////////////////////////
-	 ///	Update Ball	  ///
-	///////////////////////
+	  ////////////////////////////////////////////////////
+	 ///	Progressive Difficulty - Survival Mode	  ///
+	////////////////////////////////////////////////////
+/*
+* Every 5 secons the ball's vertical speed increases.
+* It starts adding +50 and each time adds half the previous amount.
+* It also considerates wheter the ball is going down (+) or up (-)
+*
+* Every minute, the racket size is diminished by 10% of it's current width. After minute 5
+* it is no longer reduced.
+ */
 
+	if(game.mode==game.SURVIVAL_MODE) {
 
-	if(Utilitats.updateBall){
+		// Racket's reduction
+		if(Utilitats.temps % 60 == 0 && Utilitats.temps<=300){
+			if(!Utilitats.lock ) {
+				var deltaWidth= game.paddle.width*0.1;
+				if(deltaWidth>0) game.paddle.width-=deltaWidth;
+				console.log("Paddle Reduced");
+				Utilitats.lock=true;
+			}
+		}
 
-		this.vy+=Utilitats.extraVY;
+			// Speed increase
+			else if (Utilitats.temps % 5 == 0) {
+				if(!Utilitats.lock) {
+					var deltaVY= 50/(Utilitats.temps*0.2);
+					if (this.vy > 0) this.vy += deltaVY;
+					else this.vy -= deltaVY;
+					console.log("Speed Increased");
+					Utilitats.lock=true;
+			}
+		} else Utilitats.lock=false;
 
-		this.radi=Utilitats.newRadi;
-
-		Utilitats.updateBall=false;
 	}
+
 
 
 
@@ -298,7 +326,6 @@ Ball.prototype.update = function(dt){
         w:game.paddle.width+2*this.radi,
         h:game.paddle.height+2*this.radi});
 
-	if(pXoc){XocRaqueta=true;}
 	// Costat esquerra
 
 
@@ -315,20 +342,18 @@ if(this.y>=(game.canvas.height-game.paddle.height)){
      //  Alteració velocitat  //
     ///////////////////////////
 
-    // Todo: Adjust left-half-to-right reflection (currently left-half to left)
 
 if(!game.naturalReflection) {
 	if (pXoc) {
-		this.vx = 150 + (((this.x - (game.paddle.x + 75)) / (game.paddle.x + 75)) * 1500);
+		this.vx = (((this.x - (game.paddle.x + (game.paddle.width/2))) / (game.paddle.x + (game.paddle.width/2))) * 1500);
 	}
 }
-
-	else if(XocRaqueta){
-		
+	else if(pXoc){
+		this.vx=-this.vx;
 			pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
-				p: {x: game.totxo.x - this.radi, y: game.totxo.y - this.radi},
-				w: game.totxo.w + 2 * this.radi,
-				h: game.totxo.h + 2 * this.radi
+				p: {x: game.paddle.x - this.radi, y: game.paddle.y - this.radi},
+				w: game.paddle.w + 2 * this.radi,
+				h: game.paddle.h + 2 * this.radi
 			});
 		}
 
@@ -344,7 +369,7 @@ if(!game.naturalReflection) {
 			}
 			dtXoc=(Utilitats.distancia(pXoc.p,trajectoria.p2)/Utilitats.distancia(trajectoria.p1,trajectoria.p2))*dt;
 		}
-	
+
 
 	
     // xoc amb un totxo
@@ -502,32 +527,15 @@ Game.prototype.llegirNivells = function(){ //Index1
 // Utilitats
 var Utilitats={};
 
-this.baseVX=100;
-this.baseVY=310;
-this.updateBall=false;
-this.extraVX=0;
-this.extraVY=0;
-this.newRadi=10;
-
+this.temps;
+this.lock=false;
+var executeOnce=false;;
 
 Utilitats.progresion = function progresion() { //cronometre temporitzador
 
-	if(game.mode == (game.SURVIVAL_MODE))
-	switch (game.time){
-		case 7: {
-			Utilitats.baseVX+=50;
-			Utilitats.baseVY+=50;
 
-			Utilitats.extraVX=50;
-			Utilitats.extraVY=50;
-		};break;
-		case 14:{
-			Utilitats.newRadi=5;
-		}
-		default:
-	}
-	updateBall=true;
 }
+
   //////////////////////////////////////
  ///	INTERSECCIONS - NO TOCAR	///
 //////////////////////////////////////
@@ -670,7 +678,7 @@ Utilitats.interseccioSegmentRectangle = function(seg,rect){  // seg={p1:{x:,y:},
 
 
 
-function gameStart(mode){
+function gameStart(mode,level){
 
 	if(mode==1) {
 		$("#principal").css("background-image", "url(./data/BG.timed.jpg");
@@ -682,9 +690,11 @@ function gameStart(mode){
 
 	// TODO: Config settings
 	
-	game= new Game(mode);  	   // Inicialitzem la instància del joc
-	game.inicialitzar();   // estat inicial del joc
-	setInterval(game.rellotge,1000); //cada 1 segon executa la funcio rellotge
+	game= new Game(mode);  	   // Inicialitzem la inst// ància del joc
+	game.inicialitzar(level);   // estat inicial del joc
+	if(!Utilitats.executeOnce)setInterval(game.rellotge,1000); //cada 1 segon executa la funcio rellotge
+	Utilitats.executeOnce=true;
+	game.naturalReflection=$('#naturalReflection').get(0).checked;
 	game.start=true;
 
 }
@@ -706,16 +716,15 @@ $("#back_gameMode").click(function(e) {
 
 $("#normal").click(function(e) {
 
-	gameStart(0);
-
 	$("#menu").hide();
 	$("#principal").show("puff",0,1000);
+	$("#game").hide();
 
 });
 
 $("#timed").click(function(e) {
 
-	gameStart(1);
+	gameStart(1,1);
 
 	$("#menu").hide();
 	$("#principal").show("puff",0,1000);
@@ -725,7 +734,7 @@ $("#timed").click(function(e) {
 
 $("#survival").click(function(e) {
 
-	gameStart(2);
+	gameStart(2,1);
 
 	$("#menu").hide();
 	$("#principal").show("puff",0,1000);
@@ -769,4 +778,9 @@ $("#back_canvas").click(function(e) {
 	$("#principal").hide("slide");
 	game.start=false;
 
+});
+
+$("#levelSelector").change(function(e) {
+	gameStart(0,$("#levelSelector").val());
+	$("#game").show("puff", 0, 1000);
 });

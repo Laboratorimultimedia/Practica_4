@@ -39,8 +39,8 @@
         <br>
         <h2>Settings</h2>
         <br><br>
-        <input type="radio" id="naturalReflection" name="naturalReflection"> Natural Reflection<br>
-    </div>
+        <input type="checkbox"id="naturalReflection"> Natural Reflection<br>
+</div>
 
     <div id="instructions">
         <button id="back_instructions" style="float:right">X</button>
@@ -59,12 +59,17 @@
 <div id="principal">
 
     <div id="header">
+
         <div id="logo">
             nivell:
             <form oninput="amount.value=rangeInput.value">
-                <input type="number" id="inputFiles" name="rangeInput" min="1" max="5">
+                <select id="levelSelector">
+                    <option value=0>-- Select --</option>
+                    <option value=1>1</option>
+                    <option value=2>2</option>
+                    <option value=3>3</option>
+                </select>
             </form>
-            <input type="button" id="startgame" onclick="alert('game started!')" value="Start game">
         </div>
         <div id="header-middle">
             nick:
