@@ -6,6 +6,7 @@ alerts suck
 
 * Fixed Natural Reflection
 * Cleaned some redundant code
+* Removed unused JQuery library
 
 # **Changelog v0.3**
 
