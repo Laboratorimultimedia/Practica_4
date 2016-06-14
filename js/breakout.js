@@ -1,4 +1,6 @@
-///////////////////////////////////    Objecte game
+///////////////////////////////////    Objecte game   //////////////////////////////////
+
+
 function Game(mode){
 	this.AMPLADA_TOTXO=40; this.ALÇADA_TOTXO=20; // MIDES DEL TOTXO EN PÍXELS
 	this.canvas,  this.context;       // context per poder dibuixar en el Canvas
@@ -166,7 +168,9 @@ function mainLoop(){
 		requestAnimationFrame(mainLoop);
 }
 
-///////////////////////////////////    Raqueta
+
+
+///////////////////////////////////    Raqueta   //////////////////////////////////
 function Paddle(){
     this.width = 150;
     this.height = 20;
@@ -193,7 +197,9 @@ Paddle.prototype.draw = function(ctx){
 };
 
 
-///////////////////////////////////    Pilota
+
+
+///////////////////////////////////    Pilota   //////////////////////////////////
 function Ball(){
     this.x = 0; this.y = 0;         // posició del centre de la pilota
     this.vx = 300;  this.vy = 310;  // velocitat = 300 píxels per segon, cal evitar els 45 graus en el check!!
@@ -201,12 +207,16 @@ function Ball(){
 	  this.color = "#333";  // gris fosc
 }
 
+
+//////////////////////////////////   Update Pilota   //////////////////////////////////
 Ball.prototype.update = function(dt){
+
 		var dtXoc;      // temps empleat fins al xoc
 		var xoc=false;  // si hi ha xoc en aquest dt
 		var k;          // proporció de la trajectoria que supera al xoc
 		var trajectoria={};
 		trajectoria.p1={x:this.x, y:this.y};
+
 
 
 	  ////////////////////////////////////////////////////
@@ -246,8 +256,12 @@ Ball.prototype.update = function(dt){
 
 	}
 
+	  ///////////////
+	 ///   END   ///
+	///////////////
 
 
+////// Xocs Murs
 
 //		var deltaX=this.vx*dt; 
 //		var deltaY=this.vy*dt; 
@@ -317,25 +331,24 @@ Ball.prototype.update = function(dt){
 			xoc=true;
 		}
 
-		
-    // Xoc amb la raqueta
-	var XocRaqueta=false;
+
+// END Xocs Murs
+
+	
 
     var pXoc=Utilitats.interseccioSegmentRectangle(trajectoria, {
         p: {x:game.paddle.x-this.radi,y:game.paddle.y-this.radi},
         w:game.paddle.width+2*this.radi,
         h:game.paddle.height+2*this.radi});
 
-	// Costat esquerra
 
-
-
-    // Xoc amb el mur
+    // Xoc mur inferior (-1 Life)
 
 if(this.y>=(game.canvas.height-game.paddle.height)){
     game.loseCondition=true;
+	console.log("Out of Bounds");
+	this.x=10;this.y=10;
 }
-
 
 
       ///////////////////////////
@@ -348,16 +361,8 @@ if(!game.naturalReflection) {
 		this.vx = (((this.x - (game.paddle.x + (game.paddle.width/2))) / (game.paddle.x + (game.paddle.width/2))) * 1500);
 	}
 }
-	else if(pXoc){
-		this.vx=-this.vx;
-			pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
-				p: {x: game.paddle.x - this.radi, y: game.paddle.y - this.radi},
-				w: game.paddle.w + 2 * this.radi,
-				h: game.paddle.h + 2 * this.radi
-			});
-		}
 
-		if(pXoc){
+	if(pXoc){
 			xoc=true;
 			this.x=pXoc.p.x;
 			this.y=pXoc.p.y;
@@ -372,8 +377,9 @@ if(!game.naturalReflection) {
 
 
 	
-    // xoc amb un totxo
-    
+
+    // TODO: xoc amb un totxo
+
 	/*
     
     else {
@@ -414,7 +420,6 @@ if(!game.naturalReflection) {
    
 };
 
- 
 Ball.prototype.draw = function(ctx){
 	  ctx.save();
 		ctx.fillStyle=this.color;
@@ -425,7 +430,9 @@ Ball.prototype.draw = function(ctx){
 		ctx.restore();
 };
 
-///////////////////////////////////    Totxo
+
+
+///////////////////////////////////    Totxo   //////////////////////////////////
 function Totxo(x,y,color){
 	this.x=x; this.y=y;         // posició, en píxels respecte el canvas
 	this.w=game.AMPLADA_TOTXO; this.h=game.ALÇADA_TOTXO;         // mides
@@ -440,6 +447,9 @@ Totxo.prototype.draw = function(ctx){
 	ctx.strokeRect(this.x, this.y, this.w, this.h);
 	ctx.restore();
 };
+
+
+///////////////////////////////////    Mur   //////////////////////////////////
 function Mur(n){
 	this.nivell=n;
 	this.totxos=[];
@@ -467,6 +477,9 @@ Mur.prototype.draw = function(ctx){
 	}
 
 }
+
+
+//////////////////////////////////   Lectura de Nivells    //////////////////////////////////
 Game.prototype.llegirNivells = function(){ //Index1
 	this.NIVELLS = [
 		{
@@ -523,18 +536,17 @@ Game.prototype.llegirNivells = function(){ //Index1
 }
 
 
-//////////////////////////////////////////////////////////////////////
-// Utilitats
+
+      //////////////////////////////////////////////////////////////////////////////
+            //////////////////         Utilitats          /////////////////////
+                 ///////////////////////////////////////////////////////
+
 var Utilitats={};
 
 this.temps;
 this.lock=false;
 var executeOnce=false;;
 
-Utilitats.progresion = function progresion() { //cronometre temporitzador
-
-
-}
 
   //////////////////////////////////////
  ///	INTERSECCIONS - NO TOCAR	///
@@ -667,14 +679,10 @@ Utilitats.interseccioSegmentRectangle = function(seg,rect){  // seg={p1:{x:,y:},
 
 
 
+            //////////////////////////////////////////////////////////////////////////////
+                //////////////////         Interface          /////////////////////
+                      ///////////////////////////////////////////////////////
 
-
-     ///////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////
-   /////////////////////////////////////////////////////////////////////
-  /////////////////
- /// INTERFACE ///
-/////////////////
 
 
 
