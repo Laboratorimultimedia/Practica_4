@@ -2,6 +2,11 @@
 Breakout,
 alerts suck
 
+## **Changelog v0.3.1**
+
+* Fixed Natural Reflection
+* Cleaned some redundant code
+
 # **Changelog v0.3**
 
 * **Added progresive difficulty for Survival Mode. The racket gets smaller and the ball goes faster**
