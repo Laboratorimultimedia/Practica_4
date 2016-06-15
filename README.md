@@ -1,6 +1,9 @@
 # Practica 4
 Breakout,
 alerts suck
+## **Changelog v0.4.1**
+
+* Fixed racket's speed when starting a new game
 
 # **Changelog v0.4**
 
