@@ -4,10 +4,10 @@
 function Game(mode,level){
 	this.AMPLADA_TOTXO=40; this.ALÇADA_TOTXO=20; // MIDES DEL TOTXO EN PÍXELS
 	this.canvas,  this.context;       // context per poder dibuixar en el Canvas
-  this.width, this.height;          // mides del canvas
+  	this.width, this.height;          // mides del canvas
 	this.NIVELLS= new Array();
 	this.paddle;   // la raqueta
-  this.ball;     // la pilota
+  	this.ball;     // la pilota
 	this.totxo;
 
 
@@ -99,11 +99,11 @@ if(!Utilitats.executeOnce) {
 Game.prototype.inicialitzar = function(nivell){
 	
 	
-		this.canvas = document.getElementById("game");
+	this.canvas = document.getElementById("game");
     this.width = this.AMPLADA_TOTXO*15;  // 15 totxos com a màxim d'amplada
-		this.canvas.width = this.width;
+	this.canvas.width = this.width;
     this.height = this.ALÇADA_TOTXO*25;
-		this.canvas.height =this.height;
+	this.canvas.height =this.height;
     this.context = this.canvas.getContext("2d");
 
     this.paddle = new Paddle();
@@ -200,10 +200,10 @@ Paddle.prototype.update = function(){
 }
 
 Paddle.prototype.draw = function(ctx){
-	  ctx.save();
-		ctx.fillStyle=this.color;
+	ctx.save();
+	ctx.fillStyle=this.color;
     ctx.fillRect(this.x, this.y, this.width, this.height);
-		ctx.restore();  
+	ctx.restore();
 };
 
 
@@ -213,8 +213,8 @@ Paddle.prototype.draw = function(ctx){
 function Ball(){
     this.x = 300; this.y = 400;         // posició del centre de la pilota
     this.vx = 300;  this.vy = 310;  // velocitat = 300 píxels per segon, cal evitar els 45 graus en el check!!
-	  this.radi = 10;                 // radi de la pilota
-	  this.color = "#333";  // gris fosc
+	this.radi = 10;                 // radi de la pilota
+	this.color = "#333";  // gris fosc
 }
 
 
@@ -404,6 +404,7 @@ Ball.prototype.update = function(dt){
 					});
 				}
 				if (pXoc) Utilitats.deleteBrick(i);
+				if(pXoc && game.mode==game.SURVIVAL_MODE)game.mur.construir(1);
 				if (pXoc) break;
 			}
 			if (pXoc) {
@@ -476,17 +477,26 @@ function Mur(n){
 Mur.prototype.construir=function (n) {
 	this.nivell=n;
 	var nivell=game.NIVELLS[n];
-	for(var i=0; i<nivell.totxos.length;i++){
-		var linia=nivell.totxos[i];
-		for(var j=0; j<linia.length; j++){
-			if(linia.charAt(j)!=" "){
-				var totxo=new Totxo();
-				totxo.x=j*game.AMPLADA_TOTXO;
-				totxo.y=i*game.ALÇADA_TOTXO;
-				totxo.color=nivell.colors[linia.charAt(j)];
-				this.totxos.push(totxo);
+
+	if(game.mode!=game.SURVIVAL_MODE){
+		for(var i=0; i<nivell.totxos.length;i++){
+			var linia=nivell.totxos[i];
+			for(var j=0; j<linia.length; j++){
+				if(linia.charAt(j)!=" "){
+					var totxo=new Totxo();
+					totxo.x=j*game.AMPLADA_TOTXO;
+					totxo.y=i*game.ALÇADA_TOTXO;
+					totxo.color=nivell.colors[linia.charAt(j)];
+					this.totxos.push(totxo);
+				}
 			}
 		}
+	}else{
+		var totxo=new Totxo();
+		totxo.x=Math.random()*10*game.AMPLADA_TOTXO;
+		totxo.y=Math.random()*10*game.ALÇADA_TOTXO;
+		totxo.color="#00D";
+		this.totxos.push(totxo);
 	}
 }
 Mur.prototype.draw = function(ctx){
@@ -514,29 +524,13 @@ Game.prototype.llegirNivells = function(){ //Index1
 			totxos: [
 				"           ",
 				"           ",
-				"             r "
-			]
-		},
-		{
-			colors: {
-				b: "#FFF", // blanc
-				t: "#F77", // taronja
-				c: "#4CF", // blue cel
-				v: "#8D1", // verd
-				e: "#D30", // vermell
-				l: "#00D", // blau
-				r: "#F7B", // rosa
-				g: "#F93", // groc
-				p: "#BBB", // plata
-				d: "#FB4" // dorat
-			},
-			totxos: [
-				"",
-				" d   d   d ",
-				"",
-				" p  p  p  p ",
-				"",
-				" t    t  t    t  t "
+				" p         ",
+				" ttttt     ",
+				" ccccccc   ",
+				" vvvvvvvvv ",
+				" eeeeeeeee ",
+				" lllllllll ",
+				" r r r r r "
 			]
 		},
 		{
@@ -585,14 +579,14 @@ Game.prototype.llegirNivells = function(){ //Index1
 				"ddddddddddddddd ",
 				"pppp       pppp ",
 				"tttt       tttt ",
-				"cccccccccccccc ",
+				"ccccccccccccccc ",
 				"vvvv       vvvv ",
 				"eeee       eeee ",
 				"llll       llll ",
-				"rrrrrrrrrrrrrr ",
-				"    gggggggg    ",
-				"  bbbbbbbbbbb ",
-				"dddddddddddddddd "
+				"rrrrrrrrrrrrrrr ",
+				"    ggggggg     ",
+				"  bbbbbbbbbbb   ",
+				"dddddddddddddddd"
 			]
 		}
 	];
