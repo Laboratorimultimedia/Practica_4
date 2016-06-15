@@ -2,6 +2,20 @@
 Breakout,
 alerts suck
 
+# **Changelog v1.0**
+
+* **Implemented Top 3 ranking system**
+ * Score is the number of blocks the user has destroyed
+* **Added Game Over when lives = 0 or all normal modes are completed**
+* **Implemented user data. Now a nickname has to be entred before the game starts**
+* **Added ranom level generation for Timed Mode**
+* **Added brick generation for Survival Mode**
+<br></br>
+* **Fixed an issue with normal mode first level not starting**
+* **Fixed an issue where going back from timed/survival mode prevents new games from starting**
+* **Fixed an issue where getting back from Game Over screen prevents new games from starting**
+ <br><br><br><br><br>
+
 # **Changelog v0.4**
 
 * **Added brick collision**
