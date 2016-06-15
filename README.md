@@ -6,6 +6,7 @@ alerts suck
 
 * **Added brick collision**
 * **Added game over**
+ * Implemented game over for timed mode when time=0 
 * **Added brick destruction**
 * **Added level progression**
  <br><br><br><br>
