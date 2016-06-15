@@ -376,34 +376,35 @@ if(!game.naturalReflection) {
 		}
 
 
-	
 
     // TODO: xoc amb un totxo
 
-	/*
-    
     else {
-        pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
-            p: {x: totxo.x - this.radi, y: totxo.y - this.radi},
-            w: totxo.w + 2 * this.radi,
-            h: totxo.h + 2 * this.radi
-        });
-    }
-
-	  if(pXoc){
-			xoc=true;
-			this.x=pXoc.p.x;
-			this.y=pXoc.p.y;
-			switch(pXoc.vora){
-				case "superior":
-				case "inferior":  this.vy = -this.vy; break;
-				case "esquerra":
-				case "dreta"   :  this.vx = -this.vx; break;
-			}
-			dtXoc=(Utilitats.distancia(pXoc.p,trajectoria.p2)/Utilitats.distancia(trajectoria.p1,trajectoria.p2))*dt;
+		for (var i = 0; i<game.mur.totxos.length; i++) {
+			pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
+				p: {x: game.mur.totxos[i].x - this.radi, y: game.mur.totxos[i].y - this.radi},
+				w: game.mur.totxos[i].w + 2 * this.radi,
+				h: game.mur.totxos[i].h + 2 * this.radi
+			});
+			if(pXoc) break;
 		}
-		
-	 */
+		if (pXoc) {
+			xoc = true;
+			this.x = pXoc.p.x;
+			this.y = pXoc.p.y;
+			switch (pXoc.vora) {
+				case "superior":
+				case "inferior":
+					this.vy = -this.vy;
+					break;
+				case "esquerra":
+				case "dreta"   :
+					this.vx = -this.vx;
+					break;
+			}
+			dtXoc = (Utilitats.distancia(pXoc.p, trajectoria.p2) / Utilitats.distancia(trajectoria.p1, trajectoria.p2)) * dt;
+		}
+	}
 
 
 
