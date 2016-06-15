@@ -407,7 +407,7 @@ Ball.prototype.update = function(dt){
 
 		// Xoc mur inferior (-1 Life)
 
-		if (this.y >= (game.canvas.height - game.paddle.height)) {
+		if (this.y >= (450)) {
 			game.loseCondition = true;
 			console.log("Out of Bounds");
 			// this.x=150;this.y=300;
@@ -652,7 +652,7 @@ Game.prototype.llegirNivells = function(){ //Index1
 				"rrrrrrrrrrrrrrr ",
 				"    ggggggg     ",
 				"  bbbbbbbbbbb   ",
-				"dddddddddddddddd"
+				"ddddddddddddddd "
 			]
 		},
 		{
@@ -665,26 +665,26 @@ Game.prototype.llegirNivells = function(){ //Index1
 			},
 			totxos: [
 				"",
-				"      nnnn",
-				"    nnrrrrnn",
-				"   nrrrrrrrrn",
-				"  nrrrrrrrrrrn",
-				"  nrbnrrrrbnrn",
-				" nrfnnrrrrnnfrn",
-				" nbffrrnnrrffrn",
-				" nrrrrrrrrrrrrn",
-				" nrrrrrrrrrrrrn",
-				"  nnrrnnnnrrnn",
-				"  ngnnggggnngn",
-				"  nggggggggggn",
-				"   nnnnnnnnnn",
-				"   nggggggggn",
-				"    nggggggn",
-				"    nggggggn",
-				"     nggggn",
-				"     nggggn",
-				"      nggn",
-				"       nn"
+				"      nnn",
+				"    nnrrrnn",
+				"   nrrrrrrrn",
+				"  nrrrrrrrrrn",
+				"  nrbnrrrbnrn",
+				" nrfnnrrrnnfrn",
+				" nbffrrnrrffrn",
+				" nrrrrrrrrrrrn",
+				" nrrrrrrrrrrrn",
+				"  nnrrnnnrrnn",
+				"  ngnngggnngn",
+				"  ngggggggggn",
+				"   nnnnnnnnn",
+				"   ngggggggn",
+				"    ngggggn",
+				"    ngggggn",
+				"     ngggn",
+				"     ngggn",
+				"      ngn",
+				"       n"
 			]
 		}
 	];
@@ -728,6 +728,9 @@ Utilitats.levelCompleted = function(){
 
 Utilitats.gameOver = function(){
 	console.log("Game Over");
+	$("#game_over").show();
+	$("#principal").hide();
+
 }
 
   //////////////////////////////////////
