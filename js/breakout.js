@@ -39,7 +39,8 @@ function Game(mode,level){
 	// Events del teclat
 	this.key={
 		 RIGHT:{code: 39, pressed:false}, 
-		 LEFT :{code: 37, pressed:false}
+		 LEFT :{code: 37, pressed:false},
+		SPACEBAR:{code: 32, pressed:false}
 	};
 
 
@@ -117,6 +118,9 @@ Game.prototype.inicialitzar = function(nivell){
 				}
 				else if(e.keyCode==e.data.game.key.LEFT.code){ 
 				  e.data.game.key.LEFT.pressed = true;
+				}
+				else if(e.keyCode==e.data.game.key.SPACEBAR.code){
+					game.start = true;
 				}
     });
 		$(document).on("keyup", {game:this},function(e) {
@@ -214,67 +218,67 @@ function Ball(){
 //////////////////////////////////   Update Pilota   //////////////////////////////////
 Ball.prototype.update = function(dt){
 
+	if(game.start) {
 		var dtXoc;      // temps empleat fins al xoc
-		var xoc=false;  // si hi ha xoc en aquest dt
+		var xoc = false;  // si hi ha xoc en aquest dt
 		var k;          // proporció de la trajectoria que supera al xoc
-		var trajectoria={};
-		trajectoria.p1={x:this.x, y:this.y};
+		var trajectoria = {};
+		trajectoria.p1 = {x: this.x, y: this.y};
 
 
+		////////////////////////////////////////////////////
+		///	Progressive Difficulty - Survival Mode	  ///
+		////////////////////////////////////////////////////
+		/*
+		 * Every 5 secons the ball's vertical speed increases.
+		 * It starts adding +50 and each time adds half the previous amount.
+		 * It also considerates wheter the ball is going down (+) or up (-)
+		 *
+		 * Every minute, the racket size is diminished by 10% of it's current width. After minute 5
+		 * it is no longer reduced.
+		 */
 
-	  ////////////////////////////////////////////////////
-	 ///	Progressive Difficulty - Survival Mode	  ///
-	////////////////////////////////////////////////////
-/*
-* Every 5 secons the ball's vertical speed increases.
-* It starts adding +50 and each time adds half the previous amount.
-* It also considerates wheter the ball is going down (+) or up (-)
-*
-* Every minute, the racket size is diminished by 10% of it's current width. After minute 5
-* it is no longer reduced.
- */
+		if (game.mode == game.SURVIVAL_MODE) {
 
-	if(game.mode==game.SURVIVAL_MODE) {
-
-		// Racket's reduction
-		if(Utilitats.temps % 60 == 0 && Utilitats.temps<=300){
-			if(!Utilitats.lock ) {
-				var deltaWidth= game.paddle.width*0.1;
-				if(deltaWidth>0) game.paddle.width-=deltaWidth;
-				console.log("Paddle Reduced");
-				Utilitats.lock=true;
+			// Racket's reduction
+			if (Utilitats.temps % 60 == 0 && Utilitats.temps <= 300) {
+				if (!Utilitats.lock) {
+					var deltaWidth = game.paddle.width * 0.1;
+					if (deltaWidth > 0) game.paddle.width -= deltaWidth;
+					console.log("Paddle Reduced");
+					Utilitats.lock = true;
+				}
 			}
-		}
 
 			// Speed increase
 			else if (Utilitats.temps % 5 == 0) {
-				if(!Utilitats.lock) {
-					var deltaVY= 50/(Utilitats.temps*0.2);
+				if (!Utilitats.lock) {
+					var deltaVY = 50 / (Utilitats.temps * 0.2);
 					if (this.vy > 0) this.vy += deltaVY;
 					else this.vy -= deltaVY;
 					console.log("Speed Increased");
-					Utilitats.lock=true;
-			}
-		} else Utilitats.lock=false;
+					Utilitats.lock = true;
+				}
+			} else Utilitats.lock = false;
 
-	}
+		}
 
-	  ///////////////
-	 ///   END   ///
-	///////////////
+		///////////////
+		///   END   ///
+		///////////////
 
 
 ////// Xocs Murs
 
 //		var deltaX=this.vx*dt; 
 //		var deltaY=this.vy*dt; 
-		trajectoria.p2={x:this.x + this.vx*dt, y:this.y + this.vy*dt};  // nova posició de la bola
+		trajectoria.p2 = {x: this.x + this.vx * dt, y: this.y + this.vy * dt};  // nova posició de la bola
 
 		// mirem tots els possibles xocs de la bola
-    // Xoc amb la vora de sota de la pista
-    if (trajectoria.p2.y + this.radi > game.height){    
-		  // hem perdut l'intent actual
-			
+		// Xoc amb la vora de sota de la pista
+		if (trajectoria.p2.y + this.radi > game.height) {
+			// hem perdut l'intent actual
+
 			// en aquest exemple, rebotarem  
 // mètode 1, des de p1 cap endavant
 //		  k=(game.height-this.radi - trajectoria.p1.y)/deltaY;  // k sempre positiu
@@ -289,112 +293,83 @@ Ball.prototype.update = function(dt){
 //			this.x=trajectoria.p2.x-k*deltaX; 
 //			this.y=game.height-this.radi;
 //      dtXoc=k*dt;  // temps que queda
-			
+
 // mètode 2, simplificat	sense les variables deltaX i deltaY			
-		  k=(trajectoria.p2.y+this.radi - game.height)/this.vy;  
-	    // ens col·loquem just tocant la vora de la dreta  
-		  this.x=trajectoria.p2.x-k*this.vx;
-		  this.y=game.height-this.radi;
-      dtXoc=k*dt;  // temps que queda
-			
-      this.vy = -this.vy;
-			xoc=true;
+			k = (trajectoria.p2.y + this.radi - game.height) / this.vy;
+			// ens col·loquem just tocant la vora de la dreta
+			this.x = trajectoria.p2.x - k * this.vx;
+			this.y = game.height - this.radi;
+			dtXoc = k * dt;  // temps que queda
+
+			this.vy = -this.vy;
+			xoc = true;
 		}
-		
+
 		// Xoc amb la vora de dalt de la pista
-    if (trajectoria.p2.y - this.radi < 0){   
-	  	k=(trajectoria.p2.y-this.radi)/this.vy;  // k sempre positiu
-		  // ens col·loquem just tocant la vora de dalt   
-			this.x=trajectoria.p2.x-k*this.vx;
-			this.y=this.radi;
-      this.vy = -this.vy;
-			dtXoc=k*dt;  // temps que queda
-			xoc=true;
+		if (trajectoria.p2.y - this.radi < 0) {
+			k = (trajectoria.p2.y - this.radi) / this.vy;  // k sempre positiu
+			// ens col·loquem just tocant la vora de dalt
+			this.x = trajectoria.p2.x - k * this.vx;
+			this.y = this.radi;
+			this.vy = -this.vy;
+			dtXoc = k * dt;  // temps que queda
+			xoc = true;
 		}
-    
-    // Xoc amb la vora dreta de la pista
-    if (trajectoria.p2.x + this.radi > game.width){      
-		  k=(trajectoria.p2.x+this.radi - game.width)/this.vx;
-		  // ens col·loquem just tocant la vora de la dreta  
-			this.x=game.width-this.radi;
-			this.y=trajectoria.p2.y-k*this.vy;
-      this.vx = -this.vx;
-			dtXoc=k*dt;  // temps que queda
-			xoc=true;
+
+		// Xoc amb la vora dreta de la pista
+		if (trajectoria.p2.x + this.radi > game.width) {
+			k = (trajectoria.p2.x + this.radi - game.width) / this.vx;
+			// ens col·loquem just tocant la vora de la dreta
+			this.x = game.width - this.radi;
+			this.y = trajectoria.p2.y - k * this.vy;
+			this.vx = -this.vx;
+			dtXoc = k * dt;  // temps que queda
+			xoc = true;
 		}
-		
+
 		// Xoc amb la vora esquerra de la pista
-    if (trajectoria.p2.x - this.radi< 0){   
-	  	k=(trajectoria.p2.x-this.radi)/this.vx;  // k sempre positiu
-		  // ens col·loquem just tocant la vora de l'esquerra  
-			this.x=this.radi; 			
-			this.y=trajectoria.p2.y-k*this.vy;
-      this.vx = -this.vx;
-			dtXoc=k*dt;  // temps que queda
-			xoc=true;
+		if (trajectoria.p2.x - this.radi < 0) {
+			k = (trajectoria.p2.x - this.radi) / this.vx;  // k sempre positiu
+			// ens col·loquem just tocant la vora de l'esquerra
+			this.x = this.radi;
+			this.y = trajectoria.p2.y - k * this.vy;
+			this.vx = -this.vx;
+			dtXoc = k * dt;  // temps que queda
+			xoc = true;
 		}
 
 
 // END Xocs Murs
 
-	
 
-    var pXoc=Utilitats.interseccioSegmentRectangle(trajectoria, {
-        p: {x:game.paddle.x-this.radi,y:game.paddle.y-this.radi},
-        w:game.paddle.width+2*this.radi,
-        h:game.paddle.height+2*this.radi});
-
-
-    // Xoc mur inferior (-1 Life)
-
-if(this.y>=(game.canvas.height-game.paddle.height)){
-	game.loseCondition=true;
-	console.log("Out of Bounds");
-	// this.x=150;this.y=300;
-	Utilitats.gameOver();
-}
+		var pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
+			p: {x: game.paddle.x - this.radi, y: game.paddle.y - this.radi},
+			w: game.paddle.width + 2 * this.radi,
+			h: game.paddle.height + 2 * this.radi
+		});
 
 
-      ///////////////////////////
-     //  Alteració velocitat  //
-    ///////////////////////////
+		// Xoc mur inferior (-1 Life)
 
-
-if(!game.naturalReflection) {
-	if (pXoc) {
-		this.vx = (((this.x - (game.paddle.x + (game.paddle.width/2))) / (game.paddle.x + (game.paddle.width/2))) * 1500);
-	}
-}
-
-	if(pXoc){
-			xoc=true;
-			this.x=pXoc.p.x;
-			this.y=pXoc.p.y;
-			switch(pXoc.vora){
-				case "superior":
-				case "inferior":  this.vy = -this.vy; break;
-				case "esquerra":
-				case "dreta"   :  this.vx = -this.vx; break;
-			}
-			dtXoc=(Utilitats.distancia(pXoc.p,trajectoria.p2)/Utilitats.distancia(trajectoria.p1,trajectoria.p2))*dt;
+		if (this.y >= (game.canvas.height - game.paddle.height)) {
+			game.loseCondition = true;
+			console.log("Out of Bounds");
+			// this.x=150;this.y=300;
+			Utilitats.gameOver();
 		}
 
-	  /////////////////////////////
-	 //  Col·lisió dels totxos  //
-	/////////////////////////////
 
-    else {
-		for (var i = 0; i<game.mur.totxos.length; i++) {
-			if(!game.mur.totxos[i].tocat){
-				pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
-					p: {x: game.mur.totxos[i].x - this.radi, y: game.mur.totxos[i].y - this.radi},
-					w: game.mur.totxos[i].w + 2 * this.radi,
-					h: game.mur.totxos[i].h + 2 * this.radi
-				});
+		///////////////////////////
+		//  Alteració velocitat  //
+		///////////////////////////
+
+
+		if (!game.naturalReflection) {
+			if (pXoc) {
+				this.vx = (((this.x - (game.paddle.x + (game.paddle.width / 2))) / (game.paddle.x + (game.paddle.width / 2))) * 1500);
 			}
-			if(pXoc) Utilitats.deleteBrick(i);
-			if(pXoc) break;
 		}
+
 		if (pXoc) {
 			xoc = true;
 			this.x = pXoc.p.x;
@@ -411,21 +386,53 @@ if(!game.naturalReflection) {
 			}
 			dtXoc = (Utilitats.distancia(pXoc.p, trajectoria.p2) / Utilitats.distancia(trajectoria.p1, trajectoria.p2)) * dt;
 		}
-	}
+
+		/////////////////////////////
+		//  Col·lisió dels totxos  //
+		/////////////////////////////
+
+		else {
+			for (var i = 0; i < game.mur.totxos.length; i++) {
+				if (!game.mur.totxos[i].tocat) {
+					pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
+						p: {x: game.mur.totxos[i].x - this.radi, y: game.mur.totxos[i].y - this.radi},
+						w: game.mur.totxos[i].w + 2 * this.radi,
+						h: game.mur.totxos[i].h + 2 * this.radi
+					});
+				}
+				if (pXoc) Utilitats.deleteBrick(i);
+				if (pXoc) break;
+			}
+			if (pXoc) {
+				xoc = true;
+				this.x = pXoc.p.x;
+				this.y = pXoc.p.y;
+				switch (pXoc.vora) {
+					case "superior":
+					case "inferior":
+						this.vy = -this.vy;
+						break;
+					case "esquerra":
+					case "dreta"   :
+						this.vx = -this.vx;
+						break;
+				}
+				dtXoc = (Utilitats.distancia(pXoc.p, trajectoria.p2) / Utilitats.distancia(trajectoria.p1, trajectoria.p2)) * dt;
+			}
+		}
 
 
-
-    // actualitzem la posició de la bola
-		if(xoc){
+		// actualitzem la posició de la bola
+		if (xoc) {
 			this.update(dtXoc);  // crida recursiva
 		}
-		else{
-			this.x=trajectoria.p2.x;
-			this.y=trajectoria.p2.y;
+		else {
+			this.x = trajectoria.p2.x;
+			this.y = trajectoria.p2.y;
 		}
 
 
-   
+	}
 };
 
 Ball.prototype.draw = function(ctx){
@@ -744,26 +751,28 @@ Utilitats.interseccioSegmentRectangle = function(seg,rect){  // seg={p1:{x:,y:},
 
 
 function gameStart(mode,level){
-	$("#game").show();
 	$("#game_over").hide("slide");
 
 	if(mode==1) {
+		$("#logo").hide();
+		$("#rellotge").show();
 		$("#principal").css("background-image", "url(./data/BG.timed.jpg");
 	}
-	else if(mode==2) $("#principal").css("background-image", "url(./data/BG.survival.jpg");
+	else if(mode==2) {
+		$("#logo").hide();
+		$("#rellotge").show();
+		$("#principal").css("background-image", "url(./data/BG.survival.jpg");
+	}
 	else{
 	 $("#principal").css("background-image", "url(./data/BG.normal.jpg");
 	}
 
-	// TODO: Config settings
-	
+
 	game= new Game(mode,level);  	   // Inicialitzem la inst// ància del joc
 	game.inicialitzar(level);   // estat inicial del joc
 	if(!Utilitats.executeOnce)setInterval(game.rellotge,1000); //cada 1 segon executa la funcio rellotge
 	Utilitats.executeOnce=true;
 	game.naturalReflection=$('#naturalReflection').get(0).checked;
-	game.start=true;
-
 }
 
 
@@ -845,6 +854,7 @@ $("#back_canvas").click(function(e) {
 	$("#menu").show(400);
 	$("#game_over").hide("slide");
 	$("#principal").hide("slide");
+	$("#rellotge").hide();
 	game.start=false;
 
 });
@@ -855,6 +865,6 @@ $("#levelSelector").change(function(e) {
 	}
 	else {
 		gameStart(0, ($("#levelSelector").val() - 1));
-		$("#game").show("puff", 0, 1000);
+		$("#game").show("slide", 0, 2000);
 	}
 });

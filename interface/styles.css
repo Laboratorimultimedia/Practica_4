@@ -44,6 +44,7 @@ body{
 }
 
 #settings{
+    font-size: 15px;
     border-style:outset;
     border-width: 5px;
     width:600px;
