@@ -2,10 +2,6 @@
 Breakout,
 alerts suck
 
-## **Changelog v0.4.1**
-
-* The game now requires the user to press spacebar for the game to start
-
 # **Changelog v0.4**
 
 * **Added brick collision**

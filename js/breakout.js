@@ -78,8 +78,7 @@ function Game(mode,level){
 			 ////////////////////////////////////////////////////////////////
 			/// Insert console logs here for them to be displayed each second
 
-
-
+	console.log(Utilitats.executeOnce);
 			///////////////////////////////
 			Utilitats.temps++;
 			this.min=parseInt(this.segons/60);
@@ -90,19 +89,23 @@ function Game(mode,level){
 			document.getElementById('minut').src ="data/rellotge/"+min+".jpg";
 		}
 	}
+if(!Utilitats.executeOnce) {
+	this.t = new Date().getTime();     // inicialitzem el temps
+	requestAnimationFrame(mainLoop);
+}
 
 }
 
 Game.prototype.inicialitzar = function(nivell){
 	
-
+	
 		this.canvas = document.getElementById("game");
     this.width = this.AMPLADA_TOTXO*15;  // 15 totxos com a màxim d'amplada
 		this.canvas.width = this.width;
     this.height = this.ALÇADA_TOTXO*25;
 		this.canvas.height =this.height;
     this.context = this.canvas.getContext("2d");
-			
+
     this.paddle = new Paddle();
     this.ball = new Ball();
 	//Executar Nivell Totxo
@@ -110,30 +113,29 @@ Game.prototype.inicialitzar = function(nivell){
 	this.llegirNivells();
 	this.mur.construir(nivell);
 
-			
+
 		// Events amb jQuery
-		$(document).on("keydown", {game:this},function(e) {
-				if(e.keyCode==e.data.game.key.RIGHT.code){ 
-				  e.data.game.key.RIGHT.pressed = true;
-				}
-				else if(e.keyCode==e.data.game.key.LEFT.code){ 
-				  e.data.game.key.LEFT.pressed = true;
-				}
-				else if(e.keyCode==e.data.game.key.SPACEBAR.code){
-					game.start = true;
-				}
-    });
-		$(document).on("keyup", {game:this},function(e) {
-				if(e.keyCode==e.data.game.key.RIGHT.code){ 
-				  e.data.game.key.RIGHT.pressed = false;
-				}
-				else if(e.keyCode==e.data.game.key.LEFT.code){ 
-				  e.data.game.key.LEFT.pressed = false;
-				}
-    });
-			
-		this.t=new Date().getTime();     // inicialitzem el temps
-	  requestAnimationFrame(mainLoop);	
+		$(document).on("keydown", {game: this}, function (e) {
+			if (e.keyCode == e.data.game.key.RIGHT.code) {
+				e.data.game.key.RIGHT.pressed = true;
+			}
+			else if (e.keyCode == e.data.game.key.LEFT.code) {
+				e.data.game.key.LEFT.pressed = true;
+			}
+			else if (e.keyCode == e.data.game.key.SPACEBAR.code) {
+				game.start = true;
+			}
+		});
+		$(document).on("keyup", {game: this}, function (e) {
+			if (e.keyCode == e.data.game.key.RIGHT.code) {
+				e.data.game.key.RIGHT.pressed = false;
+			}
+			else if (e.keyCode == e.data.game.key.LEFT.code) {
+				e.data.game.key.LEFT.pressed = false;
+			}
+		});
+
+
 }
 
 Game.prototype.draw = function(){
@@ -208,7 +210,7 @@ Paddle.prototype.draw = function(ctx){
 
 ///////////////////////////////////    Pilota   //////////////////////////////////
 function Ball(){
-    this.x = 150; this.y = 300;         // posició del centre de la pilota
+    this.x = 300; this.y = 400;         // posició del centre de la pilota
     this.vx = 300;  this.vy = 310;  // velocitat = 300 píxels per segon, cal evitar els 45 graus en el check!!
 	  this.radi = 10;                 // radi de la pilota
 	  this.color = "#333";  // gris fosc
@@ -511,13 +513,29 @@ Game.prototype.llegirNivells = function(){ //Index1
 			totxos: [
 				"           ",
 				"           ",
-				" p         ",
-				" ttttt     ",
-				" ccccccc   ",
-				" vvvvvvvvv ",
-				" eeeeeeeee ",
-				" lllllllll ",
-				" r r r r r "
+				"             r "
+			]
+		},
+		{
+			colors: {
+				b: "#FFF", // blanc
+				t: "#F77", // taronja
+				c: "#4CF", // blue cel
+				v: "#8D1", // verd
+				e: "#D30", // vermell
+				l: "#00D", // blau
+				r: "#F7B", // rosa
+				g: "#F93", // groc
+				p: "#BBB", // plata
+				d: "#FB4" // dorat
+			},
+			totxos: [
+				"",
+				" d   d   d ",
+				"",
+				" p  p  p  p ",
+				"",
+				" t    t  t    t  t "
 			]
 		},
 		{
@@ -591,18 +609,27 @@ this.temps;
 this.lock=false;
 var executeOnce=false;
 
+Utilitats.randomLv = function(){
+	return Math.floor((Math.random() * 2));
+}
+
 Utilitats.deleteBrick = function(index){
-	game.mur.totxos[index].tocat=true;
 	game.broken++;
-	if(game.broken>=game.mur.totxos.length) Utilitats.levelCompleted();
+	console.log("Totxos destruits: "+game.broken+"/"+(game.mur.totxos.length-1));
+	game.mur.totxos[index].tocat=true;
+	if(game.broken>=(game.mur.totxos.length-1)) Utilitats.levelCompleted();
 }
 
 Utilitats.levelCompleted = function(){
-
 	if(game.mode==game.NORMAL_MODE){
 		game.currentLv++;
 		game.inicialitzar(game.currentLv);
 	}
+	else if(game.mode==game.TIMED_MODE){
+		game.currentLv=Utilitats.randomLv();
+		game.inicialitzar(game.currentLv);
+	}
+	game.broken=0;
 }
 
 Utilitats.gameOver = function(){
@@ -768,11 +795,12 @@ function gameStart(mode,level){
 	}
 
 
-	game= new Game(mode,level);  	   // Inicialitzem la inst// ància del joc
-	game.inicialitzar(level);   // estat inicial del joc
+	game= new Game(mode,level);  
+	game.inicialitzar(level);
 	if(!Utilitats.executeOnce)setInterval(game.rellotge,1000); //cada 1 segon executa la funcio rellotge
 	Utilitats.executeOnce=true;
 	game.naturalReflection=$('#naturalReflection').get(0).checked;
+
 }
 
 
@@ -801,7 +829,7 @@ $("#normal").click(function(e) {
 
 $("#timed").click(function(e) {
 
-	gameStart(1,1);
+	gameStart(1,0);
 
 	$("#menu").hide();
 	$("#principal").show("puff",0,1000);
