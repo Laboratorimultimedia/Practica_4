@@ -2,6 +2,14 @@
 Breakout,
 alerts suck
 
+# **Changelog v0.4**
+
+* **Added brick collision**
+* **Added game over**
+* **Added brick destruction**
+* **Added level progression**
+ <br><br><br><br>
+
 ## **Changelog v0.3.1**
 
 * Fixed Natural Reflection
