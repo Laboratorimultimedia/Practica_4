@@ -4,6 +4,8 @@ alerts suck
 
 # **Changelog v1.0**
 
+**New stable release, featuring:**
+<br></br>
 * **Implemented Top 3 ranking system**
  * Score is the number of blocks the user has destroyed
 * **Added Game Over when lives = 0 or all normal modes are completed**
