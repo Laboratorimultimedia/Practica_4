@@ -78,7 +78,7 @@ function Game(mode,level){
 			 ////////////////////////////////////////////////////////////////
 			/// Insert console logs here for them to be displayed each second
 
-	console.log(Utilitats.executeOnce);
+
 			///////////////////////////////
 			Utilitats.temps++;
 			this.min=parseInt(this.segons/60);
@@ -166,6 +166,7 @@ $(document).ready(function(){
 	$("#gameMode").hide();
 	$("#settings").hide();
 	$("#instructions").hide();
+	$("#game_over").hide();
 });
 
 
@@ -610,7 +611,7 @@ this.lock=false;
 var executeOnce=false;
 
 Utilitats.randomLv = function(){
-	return Math.floor((Math.random() * 2));
+	return Math.floor((Math.random() * 2)+1);
 }
 
 Utilitats.deleteBrick = function(index){
@@ -633,10 +634,7 @@ Utilitats.levelCompleted = function(){
 }
 
 Utilitats.gameOver = function(){
-	game.start=false;
-	$("#joc").hide();
-	$("#principal").css("background-image", "url(./data/GameOver/bg_go.png");
-	$("#game_over").show();
+	console.log("Game Over");
 }
 
   //////////////////////////////////////
@@ -778,7 +776,7 @@ Utilitats.interseccioSegmentRectangle = function(seg,rect){  // seg={p1:{x:,y:},
 
 
 function gameStart(mode,level){
-	$("#game_over").hide("slide");
+
 
 	if(mode==1) {
 		$("#logo").hide();
@@ -800,7 +798,6 @@ function gameStart(mode,level){
 	if(!Utilitats.executeOnce)setInterval(game.rellotge,1000); //cada 1 segon executa la funcio rellotge
 	Utilitats.executeOnce=true;
 	game.naturalReflection=$('#naturalReflection').get(0).checked;
-
 }
 
 
@@ -880,6 +877,7 @@ $("#back_settings").click(function(e) {
 
 $("#back_canvas").click(function(e) {
 	$("#menu").show(400);
+	$("#gameMode").show("slide");
 	$("#game_over").hide("slide");
 	$("#principal").hide("slide");
 	$("#rellotge").hide();
@@ -895,4 +893,9 @@ $("#levelSelector").change(function(e) {
 		gameStart(0, ($("#levelSelector").val() - 1));
 		$("#game").show("slide", 0, 2000);
 	}
+});
+
+$("#back_game_over").click(function(e) {
+
+
 });

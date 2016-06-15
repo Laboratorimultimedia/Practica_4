@@ -105,6 +105,8 @@ div#header div {
 }
 #game_over{
     min-width: 600px;
+    margin: 0 auto;
+    margin-left: 15%;
 }
 #img_wrap{
     margin: 0 auto;
