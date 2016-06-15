@@ -160,8 +160,6 @@ $(document).ready(function(){
 	$("#gameMode").hide();
 	$("#settings").hide();
 	$("#instructions").hide();
-
-	Utilitats.blankBrick= new Totxo(0,0,"#FFF0");
 });
 
 
@@ -387,8 +385,7 @@ if(!game.naturalReflection) {
 
     else {
 		for (var i = 0; i<game.mur.totxos.length; i++) {
-
-			if(game.mur.totxos[i]!=null){
+			if(!game.mur.totxos[i].tocat){
 				pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
 					p: {x: game.mur.totxos[i].x - this.radi, y: game.mur.totxos[i].y - this.radi},
 					w: game.mur.totxos[i].w + 2 * this.radi,
@@ -448,15 +445,9 @@ function Totxo(x,y,color){
 	this.x=x; this.y=y;         // posició, en píxels respecte el canvas
 	this.w=game.AMPLADA_TOTXO; this.h=game.ALÇADA_TOTXO;         // mides
 	this.color=color;
+	this.tocat=false;
 }
 
-// TODO: blankBrick should be created from normal constructor
-
-function Totxo(color){
-	this.x=-10; this.y=-25;         // posició, en píxels respecte el canvas
-	this.w=40; this.h=20;         // mides
-	this.color=color;
-}
 Totxo.prototype.draw = function(ctx){
 	ctx.save();
 	ctx.fillStyle=this.color;
@@ -491,7 +482,7 @@ Mur.prototype.construir=function (n) {
 Mur.prototype.draw = function(ctx){
 	for(var i=0; this.totxos.length>i; i++){
 		var totxo = this.totxos[i];
-		totxo.draw(ctx);
+		if(!totxo.tocat)totxo.draw(ctx);
 	}
 
 }
@@ -593,10 +584,8 @@ this.temps;
 this.lock=false;
 var executeOnce=false;
 
-this.blankBrick =new Totxo("rgba(0, 0, 0, 0)");
-
 Utilitats.deleteBrick = function(index){
-	game.mur.totxos[index]=this.blankBrick;
+	game.mur.totxos[index].tocat=true;
 	game.broken++;
 	if(game.broken>=game.mur.totxos.length) Utilitats.levelCompleted();
 }
