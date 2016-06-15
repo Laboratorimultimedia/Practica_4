@@ -551,7 +551,7 @@ Mur.prototype.construir=function (n) {
 		var totxo=new Totxo();
 		totxo.x=Math.random()*10*game.AMPLADA_TOTXO;
 		totxo.y=Math.random()*10*game.ALÇADA_TOTXO;
-		totxo.color="#00D";
+		totxo.color="#000";
 		this.totxos.push(totxo);
 	}
 }

@@ -22,9 +22,9 @@
 
 body{
     color:black;
-    background-image: url("../data/retrobackground.jpg");
-    background-color: white;
-    font-family: Impact;
+    background-image: url(../data/abstractbg.jpg);
+    font-family: "Comic Sans MS";
+    font-size:15px;
 }
 
 
@@ -44,11 +44,18 @@ body{
 }
 
 #settings{
-    font-size: 15px;
+    font-size: 30px;
     border-style:outset;
     border-width: 5px;
     width:600px;
     text-align: center;
+}
+
+input[type=checkbox] {
+    transform: scale(3);
+    -ms-transform: scale(3);
+    -webkit-transform: scale(3);
+    padding: 20px;
 }
 
 #main{
