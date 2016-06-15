@@ -102,3 +102,10 @@ div#header div {
     margin-bottom: 5px;
 
 }
+#game_over{
+    min-width: 600px;
+}
+#img_wrap{
+    margin: 0 auto;
+    margin-left: 15%;
+}

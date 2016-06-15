@@ -1,7 +1,7 @@
 ///////////////////////////////////    Objecte game   //////////////////////////////////
 
 
-function Game(mode){
+function Game(mode,level){
 	this.AMPLADA_TOTXO=40; this.ALÇADA_TOTXO=20; // MIDES DEL TOTXO EN PÍXELS
 	this.canvas,  this.context;       // context per poder dibuixar en el Canvas
   this.width, this.height;          // mides del canvas
@@ -11,14 +11,16 @@ function Game(mode){
 	this.totxo;
 
 
+
 	  ////////////////////////
      //  Global Variables  //
     ////////////////////////
 	this.t=0;      // el temps
 	this.start=false;
     this.loseCondition=false;
-	this.currentLv=1;
+	this.currentLv=level;
 	this.naturalReflection=false;
+	this.broken=0;
 	
 	// Timer
 	
@@ -65,6 +67,7 @@ function Game(mode){
 			if(game.mode==game.TIMED_MODE){
 				if(this.segons == 0){
 					this.start=false;
+					Utilitats.gameOver();
 				}
 				else this.segons--;
 			}
@@ -157,6 +160,8 @@ $(document).ready(function(){
 	$("#gameMode").hide();
 	$("#settings").hide();
 	$("#instructions").hide();
+
+	Utilitats.blankBrick= new Totxo(0,0,"#FFF0");
 });
 
 
@@ -201,7 +206,7 @@ Paddle.prototype.draw = function(ctx){
 
 ///////////////////////////////////    Pilota   //////////////////////////////////
 function Ball(){
-    this.x = 0; this.y = 0;         // posició del centre de la pilota
+    this.x = 150; this.y = 300;         // posició del centre de la pilota
     this.vx = 300;  this.vy = 310;  // velocitat = 300 píxels per segon, cal evitar els 45 graus en el check!!
 	  this.radi = 10;                 // radi de la pilota
 	  this.color = "#333";  // gris fosc
@@ -345,9 +350,10 @@ Ball.prototype.update = function(dt){
     // Xoc mur inferior (-1 Life)
 
 if(this.y>=(game.canvas.height-game.paddle.height)){
-    game.loseCondition=true;
+	game.loseCondition=true;
 	console.log("Out of Bounds");
-	this.x=10;this.y=10;
+	// this.x=150;this.y=300;
+	Utilitats.gameOver();
 }
 
 
@@ -375,17 +381,21 @@ if(!game.naturalReflection) {
 			dtXoc=(Utilitats.distancia(pXoc.p,trajectoria.p2)/Utilitats.distancia(trajectoria.p1,trajectoria.p2))*dt;
 		}
 
-
-
-    // TODO: xoc amb un totxo
+	  /////////////////////////////
+	 //  Col·lisió dels totxos  //
+	/////////////////////////////
 
     else {
 		for (var i = 0; i<game.mur.totxos.length; i++) {
-			pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
-				p: {x: game.mur.totxos[i].x - this.radi, y: game.mur.totxos[i].y - this.radi},
-				w: game.mur.totxos[i].w + 2 * this.radi,
-				h: game.mur.totxos[i].h + 2 * this.radi
-			});
+
+			if(game.mur.totxos[i]!=null){
+				pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
+					p: {x: game.mur.totxos[i].x - this.radi, y: game.mur.totxos[i].y - this.radi},
+					w: game.mur.totxos[i].w + 2 * this.radi,
+					h: game.mur.totxos[i].h + 2 * this.radi
+				});
+			}
+			if(pXoc) Utilitats.deleteBrick(i);
 			if(pXoc) break;
 		}
 		if (pXoc) {
@@ -440,6 +450,13 @@ function Totxo(x,y,color){
 	this.color=color;
 }
 
+// TODO: blankBrick should be created from normal constructor
+
+function Totxo(color){
+	this.x=-10; this.y=-25;         // posició, en píxels respecte el canvas
+	this.w=40; this.h=20;         // mides
+	this.color=color;
+}
 Totxo.prototype.draw = function(ctx){
 	ctx.save();
 	ctx.fillStyle=this.color;
@@ -532,6 +549,34 @@ Game.prototype.llegirNivells = function(){ //Index1
 				" bbbbbbbbbbbb ",
 				" ddddddddddddd "
 			]
+		},
+		{
+			colors: {
+				b: "#FFF", // blanc
+				t: "#F77", // taronja
+				c: "#4CF", // blue cel
+				v: "#8D1", // verd
+				e: "#D30", // vermell
+				l: "#00D", // blau
+				r: "#F7B", // rosa
+				g: "#F93", // groc
+				p: "#BBB", // plata
+				d: "#FB4" // dorat
+			},
+			totxos: [
+				"",
+				"ddddddddddddddd ",
+				"pppp       pppp ",
+				"tttt       tttt ",
+				"cccccccccccccc ",
+				"vvvv       vvvv ",
+				"eeee       eeee ",
+				"llll       llll ",
+				"rrrrrrrrrrrrrr ",
+				"    gggggggg    ",
+				"  bbbbbbbbbbb ",
+				"dddddddddddddddd "
+			]
 		}
 	];
 }
@@ -546,8 +591,30 @@ var Utilitats={};
 
 this.temps;
 this.lock=false;
-var executeOnce=false;;
+var executeOnce=false;
 
+this.blankBrick =new Totxo("rgba(0, 0, 0, 0)");
+
+Utilitats.deleteBrick = function(index){
+	game.mur.totxos[index]=this.blankBrick;
+	game.broken++;
+	if(game.broken>=game.mur.totxos.length) Utilitats.levelCompleted();
+}
+
+Utilitats.levelCompleted = function(){
+
+	if(game.mode==game.NORMAL_MODE){
+		game.currentLv++;
+		game.inicialitzar(game.currentLv);
+	}
+}
+
+Utilitats.gameOver = function(){
+	game.start=false;
+	$("#joc").hide();
+	$("#principal").css("background-image", "url(./data/GameOver/bg_go.png");
+	$("#game_over").show();
+}
 
   //////////////////////////////////////
  ///	INTERSECCIONS - NO TOCAR	///
@@ -688,6 +755,8 @@ Utilitats.interseccioSegmentRectangle = function(seg,rect){  // seg={p1:{x:,y:},
 
 
 function gameStart(mode,level){
+	$("#game").show();
+	$("#game_over").hide("slide");
 
 	if(mode==1) {
 		$("#principal").css("background-image", "url(./data/BG.timed.jpg");
@@ -699,7 +768,7 @@ function gameStart(mode,level){
 
 	// TODO: Config settings
 	
-	game= new Game(mode);  	   // Inicialitzem la inst// ància del joc
+	game= new Game(mode,level);  	   // Inicialitzem la inst// ància del joc
 	game.inicialitzar(level);   // estat inicial del joc
 	if(!Utilitats.executeOnce)setInterval(game.rellotge,1000); //cada 1 segon executa la funcio rellotge
 	Utilitats.executeOnce=true;
@@ -727,6 +796,7 @@ $("#normal").click(function(e) {
 
 	$("#menu").hide();
 	$("#principal").show("puff",0,1000);
+	$("#game_over").hide();
 	$("#game").hide();
 
 });
@@ -784,6 +854,7 @@ $("#back_settings").click(function(e) {
 
 $("#back_canvas").click(function(e) {
 	$("#menu").show(400);
+	$("#game_over").hide("slide");
 	$("#principal").hide("slide");
 	game.start=false;
 
