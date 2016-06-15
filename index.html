@@ -61,10 +61,9 @@
     <div id="header">
 
         <div id="logo">
-            nivell:
+            Level Selector:
             <form oninput="amount.value=rangeInput.value">
                 <select id="levelSelector">
-                    <option value=0>-- Select --</option>
                     <option value=2>1</option>
                     <option value=3>2</option>
                     <option value=4>3</option>
@@ -73,19 +72,22 @@
             </form>
         </div>
         <div id="header-middle">
-            nick:
-            <input type="text" name="nick">
+            Nickname:
+            <input type="text" id="nick">
             </br>
-            Marcador: 0 punts
+           Blocks destroyed:<div id="broken"> 0 </div>
             </br>
-            Intents restants:
-            <img src="./data/heart.png">
-            <img src="./data/heart.png">
-            <img src="./data/heart.png">
-            <img src="./data/heart.png">
+            Attempts remaining:
+            <img id="heart1" src="./data/heart.png">
+            <img id="heart2" src="./data/heart.png">
+            <img id="heart3" src="./data/heart.png">
+            <img id="heart4" src="./data/heart.png">
         </div>
         <div id="ranking">
-            Top 3:
+            Top 3<br>
+            <div id="Top_1"></div><br>
+            <div id="Top_2"></div><br>
+            <div id="Top_3"></div>
         </div>
         <button id="back_canvas" style="float:left">X</button>
     </div>
@@ -102,11 +104,10 @@
     </div>
 </div>
 <div id="game_over">
-    <button id=back_game_over" style="float:right">Back</button>
     <div id="img_wrap">
         <img id="go1" src="./data/GameOver/go1.jpg">
     </div>
-
+<div id="results"></div>
 </div>
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/breakout.js" defer></script>

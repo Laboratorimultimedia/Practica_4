@@ -112,3 +112,9 @@ div#header div {
     margin: 0 auto;
     margin-left: 15%;
 }
+#ranking{
+    font-size:2px;
+}
+#results{
+    margin-left: 35%;
+}
