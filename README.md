@@ -2,6 +2,12 @@
 Breakout,
 alerts suck
 
+## **Changelog v1.0.1**
+
+* Tweaked interface
+* Added more information in the Instructions menu
+* Enlarged checkbox size
+
 # **Changelog v1.0**
 
 **New stable release, featuring:**
