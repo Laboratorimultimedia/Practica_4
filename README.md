@@ -16,6 +16,7 @@ alerts suck
 * **Fixed an issue with normal mode first level not starting**
 * **Fixed an issue where going back from timed/survival mode prevents new games from starting**
 * **Fixed an issue where getting back from Game Over screen prevents new games from starting**
+* **Fixed an issue where starting new games subsequently accelerates the racket's speed**
  <br><br><br><br><br>
 
 # **Changelog v0.4**
