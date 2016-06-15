@@ -50,11 +50,64 @@ function Game(mode,level){
 				console.log("Timer Reseted");
 				Utilitats.temps=0;
 				if(game.mode==game.TIMED_MODE){
-					this.segons=60;
-					this.seg1=0;
-					this.seg2=0;
-					this.min=1;
-					game.resetTime=false;
+
+					switch (game.currentLv) {
+						case 0:
+						{
+							this.segons = 30;
+							this.seg1 = 0;
+							this.seg2 = 3;
+							this.min = 0;
+							game.resetTime = false;
+						};break;
+
+						case 1:
+						{
+							this.segons = 60;
+							this.seg1 = 0;
+							this.seg2 = 0;
+							this.min = 1;
+							game.resetTime = false;
+						};break;
+						case 2:
+
+						{
+							this.segons = 150;
+							this.seg1 = 0;
+							this.seg2 = 3;
+							this.min = 2;
+							game.resetTime = false;
+						};break;
+
+						case 3:
+						{
+							this.segons = 180;
+							this.seg1 = 0;
+							this.seg2 = 0;
+							this.min = 3;
+							game.resetTime = false;
+						};break;
+
+						case 4:
+						{
+							this.segons = 240;
+							this.seg1 = 0;
+							this.seg2 = 0;
+							this.min = 4;
+							game.resetTime = false;
+						};break;
+
+						default:
+						{
+							this.segons = 60;
+							this.seg1 = 0;
+							this.seg2 = 0;
+							this.min = 1;
+							game.resetTime = false;
+						};
+
+					}
+
 				}
 				else{
 					this.segons=0;
@@ -514,25 +567,38 @@ Game.prototype.llegirNivells = function(){ //Index1
 		{
 			colors: {
 				t: "#F77", // taronja
-				c: "#4CF", // blue cel
-				v: "#8D1", // verd
-				e: "#D30", // vermell
-				l: "#00D", // blau
+
 				r: "#F7B", // rosa
 				p: "#BBB" // plata
 			},
 			totxos: [
 				"           ",
 				"           ",
-				" p         ",
-				" ttttt     ",
-				" ccccccc   ",
-				" vvvvvvvvv ",
-				" eeeeeeeee ",
-				" lllllllll ",
-				" r r r r r "
+				"       p         ",
+				"     ttttt     ",
+
 			]
+		},{
+
+			colors: {
+
+				t: "#F77", // taronja
+				c: "#4CF", // blue cel
+				v: "#8D1", // verd
+				e: "#D30", // vermell
+				l: "#00D", // blau
+				r: "#F7B", // rosa
+				p: "#BBB" // plata
 		},
+	totxos: [
+		"           ",
+		"           ",
+		" p  p    p   ",
+		" t  t   t t  t ",
+		" c c  c c    cc",
+		" r r  r r r "
+	]
+},
 		{
 			colors: {
 				b: "#FFF", // blanc
@@ -588,6 +654,38 @@ Game.prototype.llegirNivells = function(){ //Index1
 				"  bbbbbbbbbbb   ",
 				"dddddddddddddddd"
 			]
+		},
+		{
+			colors: {
+				b: "#FFF", // blanc
+				n: "#00", // negro
+				r: "#F99", // rosa
+				f: "#900", // rosa fosc
+				g: "#FF0", // groc
+			},
+			totxos: [
+				"",
+				"      nnnn",
+				"    nnrrrrnn",
+				"   nrrrrrrrrn",
+				"  nrrrrrrrrrrn",
+				"  nrbnrrrrbnrn",
+				" nrfnnrrrrnnfrn",
+				" nbffrrnnrrffrn",
+				" nrrrrrrrrrrrrn",
+				" nrrrrrrrrrrrrn",
+				"  nnrrnnnnrrnn",
+				"  ngnnggggnngn",
+				"  nggggggggggn",
+				"   nnnnnnnnnn",
+				"   nggggggggn",
+				"    nggggggn",
+				"    nggggggn",
+				"     nggggn",
+				"     nggggn",
+				"      nggn",
+				"       nn"
+			]
 		}
 	];
 }
@@ -605,7 +703,7 @@ this.lock=false;
 var executeOnce=false;
 
 Utilitats.randomLv = function(){
-	return Math.floor((Math.random() * 2)+1);
+	return Math.floor((Math.random() * 3)+1);
 }
 
 Utilitats.deleteBrick = function(index){
@@ -621,6 +719,7 @@ Utilitats.levelCompleted = function(){
 		game.inicialitzar(game.currentLv);
 	}
 	else if(game.mode==game.TIMED_MODE){
+		game.resetTime = true;
 		game.currentLv=Utilitats.randomLv();
 		game.inicialitzar(game.currentLv);
 	}
