@@ -2,12 +2,16 @@
 Breakout,
 alerts suck
 
+# **Changelog v0.4**
+
+* **Added brick collisions**
+ <br><br><br><br>
 ## **Changelog v0.3.1**
 
 * Fixed Natural Reflection
 * Cleaned some redundant code
 * Removed unused JQuery library
-
+ <br><br>
 # **Changelog v0.3**
 
 * **Added progresive difficulty for Survival Mode. The racket gets smaller and the ball goes faster**
