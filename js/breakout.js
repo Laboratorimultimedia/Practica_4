@@ -78,7 +78,8 @@ function Game(mode,level){
 			 ////////////////////////////////////////////////////////////////
 			/// Insert console logs here for them to be displayed each second
 
-	console.log(Utilitats.executeOnce);
+
+
 			///////////////////////////////
 			Utilitats.temps++;
 			this.min=parseInt(this.segons/60);
@@ -89,23 +90,20 @@ function Game(mode,level){
 			document.getElementById('minut').src ="data/rellotge/"+min+".jpg";
 		}
 	}
-if(!Utilitats.executeOnce) {
-	this.t = new Date().getTime();     // inicialitzem el temps
-	requestAnimationFrame(mainLoop);
-}
+
 
 }
 
 Game.prototype.inicialitzar = function(nivell){
 	
-	
-		this.canvas = document.getElementById("game");
-    this.width = this.AMPLADA_TOTXO*15;  // 15 totxos com a màxim d'amplada
-		this.canvas.width = this.width;
-    this.height = this.ALÇADA_TOTXO*25;
-		this.canvas.height =this.height;
-    this.context = this.canvas.getContext("2d");
 
+	this.canvas = document.getElementById("game");
+    this.width = this.AMPLADA_TOTXO*15;  // 15 totxos com a màxim d'amplada
+	this.canvas.width = this.width;
+    this.height = this.ALÇADA_TOTXO*25;
+	this.canvas.height =this.height;
+    this.context = this.canvas.getContext("2d");
+			
     this.paddle = new Paddle();
     this.ball = new Ball();
 	//Executar Nivell Totxo
@@ -114,35 +112,38 @@ Game.prototype.inicialitzar = function(nivell){
 	this.mur.construir(nivell);
 
 
+
+			
 		// Events amb jQuery
-		$(document).on("keydown", {game: this}, function (e) {
-			if (e.keyCode == e.data.game.key.RIGHT.code) {
-				e.data.game.key.RIGHT.pressed = true;
-			}
-			else if (e.keyCode == e.data.game.key.LEFT.code) {
-				e.data.game.key.LEFT.pressed = true;
-			}
-			else if (e.keyCode == e.data.game.key.SPACEBAR.code) {
-				game.start = true;
-			}
-		});
-		$(document).on("keyup", {game: this}, function (e) {
-			if (e.keyCode == e.data.game.key.RIGHT.code) {
-				e.data.game.key.RIGHT.pressed = false;
-			}
-			else if (e.keyCode == e.data.game.key.LEFT.code) {
-				e.data.game.key.LEFT.pressed = false;
-			}
-		});
-
-
+		$(document).on("keydown", {game:this},function(e) {
+				if(e.keyCode==e.data.game.key.RIGHT.code){ 
+				  e.data.game.key.RIGHT.pressed = true;
+				}
+				else if(e.keyCode==e.data.game.key.LEFT.code){ 
+				  e.data.game.key.LEFT.pressed = true;
+				}
+				else if(e.keyCode==e.data.game.key.SPACEBAR.code){
+					game.start = true;
+				}
+    });
+		$(document).on("keyup", {game:this},function(e) {
+				if(e.keyCode==e.data.game.key.RIGHT.code){ 
+				  e.data.game.key.RIGHT.pressed = false;
+				}
+				else if(e.keyCode==e.data.game.key.LEFT.code){ 
+				  e.data.game.key.LEFT.pressed = false;
+				}
+    });
+			
+		this.t=new Date().getTime();     // inicialitzem el temps
+	  requestAnimationFrame(mainLoop);	
 }
 
 Game.prototype.draw = function(){
 	 
-   this.context.clearRect(0, 0, this.width, this.height);
-		
-    this.mur.draw(this.context);
+   	this.context.clearRect(0, 0, this.width, this.height);
+	this.mur.draw(this.context);
+
     this.paddle.draw(this.context);
     this.ball.draw(this.context);
 };
@@ -199,10 +200,10 @@ Paddle.prototype.update = function(){
 }
 
 Paddle.prototype.draw = function(ctx){
-	  ctx.save();
-		ctx.fillStyle=this.color;
+	ctx.save();
+	ctx.fillStyle=this.color;
     ctx.fillRect(this.x, this.y, this.width, this.height);
-		ctx.restore();  
+	ctx.restore();
 };
 
 
@@ -262,6 +263,7 @@ Ball.prototype.update = function(dt){
 					Utilitats.lock = true;
 				}
 			} else Utilitats.lock = false;
+
 
 		}
 
@@ -401,8 +403,10 @@ Ball.prototype.update = function(dt){
 						w: game.mur.totxos[i].w + 2 * this.radi,
 						h: game.mur.totxos[i].h + 2 * this.radi
 					});
+
 				}
 				if (pXoc) Utilitats.deleteBrick(i);
+				if(pXoc && game.mode==game.SURVIVAL_MODE)game.mur.construir(1);
 				if (pXoc) break;
 			}
 			if (pXoc) {
@@ -475,20 +479,31 @@ function Mur(n){
 Mur.prototype.construir=function (n) {
 	this.nivell=n;
 	var nivell=game.NIVELLS[n];
-	for(var i=0; i<nivell.totxos.length;i++){
-		var linia=nivell.totxos[i];
-		for(var j=0; j<linia.length; j++){
-			if(linia.charAt(j)!=" "){
-				var totxo=new Totxo();
-				totxo.x=j*game.AMPLADA_TOTXO;
-				totxo.y=i*game.ALÇADA_TOTXO;
-				totxo.color=nivell.colors[linia.charAt(j)];
-				this.totxos.push(totxo);
+
+
+	if(game.mode!=game.SURVIVAL_MODE){
+		for(var i=0; i<nivell.totxos.length;i++){
+			var linia=nivell.totxos[i];
+			for(var j=0; j<linia.length; j++){
+				if(linia.charAt(j)!=" "){
+					var totxo=new Totxo();
+					totxo.x=j*game.AMPLADA_TOTXO;
+					totxo.y=i*game.ALÇADA_TOTXO;
+					totxo.color=nivell.colors[linia.charAt(j)];
+					this.totxos.push(totxo);
+				}
 			}
 		}
+	}else{
+		var totxo=new Totxo();
+		totxo.x=Math.random()*10*game.AMPLADA_TOTXO;
+		totxo.y=Math.random()*10*game.ALÇADA_TOTXO;
+		totxo.color="#00D";
+		this.totxos.push(totxo);
 	}
 }
 Mur.prototype.draw = function(ctx){
+
 	for(var i=0; this.totxos.length>i; i++){
 		var totxo = this.totxos[i];
 		if(!totxo.tocat)totxo.draw(ctx);
@@ -513,29 +528,13 @@ Game.prototype.llegirNivells = function(){ //Index1
 			totxos: [
 				"           ",
 				"           ",
-				"             r "
-			]
-		},
-		{
-			colors: {
-				b: "#FFF", // blanc
-				t: "#F77", // taronja
-				c: "#4CF", // blue cel
-				v: "#8D1", // verd
-				e: "#D30", // vermell
-				l: "#00D", // blau
-				r: "#F7B", // rosa
-				g: "#F93", // groc
-				p: "#BBB", // plata
-				d: "#FB4" // dorat
-			},
-			totxos: [
-				"",
-				" d   d   d ",
-				"",
-				" p  p  p  p ",
-				"",
-				" t    t  t    t  t "
+				" p         ",
+				" ttttt     ",
+				" ccccccc   ",
+				" vvvvvvvvv ",
+				" eeeeeeeee ",
+				" lllllllll ",
+				" r r r r r "
 			]
 		},
 		{
@@ -609,27 +608,18 @@ this.temps;
 this.lock=false;
 var executeOnce=false;
 
-Utilitats.randomLv = function(){
-	return Math.floor((Math.random() * 2));
-}
-
 Utilitats.deleteBrick = function(index){
-	game.broken++;
-	console.log("Totxos destruits: "+game.broken+"/"+(game.mur.totxos.length-1));
 	game.mur.totxos[index].tocat=true;
-	if(game.broken>=(game.mur.totxos.length-1)) Utilitats.levelCompleted();
+	game.broken++;
+	if(game.broken>=game.mur.totxos.length) Utilitats.levelCompleted();
 }
 
 Utilitats.levelCompleted = function(){
+
 	if(game.mode==game.NORMAL_MODE){
 		game.currentLv++;
 		game.inicialitzar(game.currentLv);
 	}
-	else if(game.mode==game.TIMED_MODE){
-		game.currentLv=Utilitats.randomLv();
-		game.inicialitzar(game.currentLv);
-	}
-	game.broken=0;
 }
 
 Utilitats.gameOver = function(){
@@ -795,12 +785,11 @@ function gameStart(mode,level){
 	}
 
 
-	game= new Game(mode,level);  
-	game.inicialitzar(level);
+	game= new Game(mode,level);  	   // Inicialitzem la inst// ància del joc
+	game.inicialitzar(level);   // estat inicial del joc
 	if(!Utilitats.executeOnce)setInterval(game.rellotge,1000); //cada 1 segon executa la funcio rellotge
 	Utilitats.executeOnce=true;
 	game.naturalReflection=$('#naturalReflection').get(0).checked;
-
 }
 
 
@@ -829,7 +818,7 @@ $("#normal").click(function(e) {
 
 $("#timed").click(function(e) {
 
-	gameStart(1,0);
+	gameStart(1,1);
 
 	$("#menu").hide();
 	$("#principal").show("puff",0,1000);
