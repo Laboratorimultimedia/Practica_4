@@ -380,32 +380,31 @@ if(!game.naturalReflection) {
 
     // TODO: xoc amb un totxo
 
-	/*
-    
-    else {
-        pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
-            p: {x: totxo.x - this.radi, y: totxo.y - this.radi},
-            w: totxo.w + 2 * this.radi,
-            h: totxo.h + 2 * this.radi
-        });
-    }
+	else {
+		for(var i=0; game.mur.totxos.length>i; i++){
+			if(!game.mur.totxos[i].tocat){
+			pXoc = Utilitats.interseccioSegmentRectangle(trajectoria, {
+				p: {x: game.mur.totxos[i].x - this.radi, y: game.mur.totxos[i].y - this.radi},
+				w: game.mur.totxos[i].w + 2 * this.radi,
+				h: game.mur.totxos[i].h + 2 * this.radi
 
-	  if(pXoc){
-			xoc=true;
-			this.x=pXoc.p.x;
-			this.y=pXoc.p.y;
-			switch(pXoc.vora){
-				case "superior":
-				case "inferior":  this.vy = -this.vy; break;
-				case "esquerra":
-				case "dreta"   :  this.vx = -this.vx; break;
+			});
+			if(pXoc){
+				game.mur.totxos[i].tocat=true;
+				xoc=true;
+				this.x=pXoc.p.x;
+				this.y=pXoc.p.y;
+				switch(pXoc.vora){
+					case "superior":
+					case "inferior":  this.vy = -this.vy; break;
+					case "esquerra":
+					case "dreta"   :  this.vx = -this.vx; break;
+				}
+				dtXoc=(Utilitats.distancia(pXoc.p,trajectoria.p2)/Utilitats.distancia(trajectoria.p1,trajectoria.p2))*dt;
+
 			}
-			dtXoc=(Utilitats.distancia(pXoc.p,trajectoria.p2)/Utilitats.distancia(trajectoria.p1,trajectoria.p2))*dt;
-		}
-		
-	 */
-
-
+		}}
+	}
 
     // actualitzem la posició de la bola
 		if(xoc){
@@ -437,6 +436,7 @@ function Totxo(x,y,color){
 	this.x=x; this.y=y;         // posició, en píxels respecte el canvas
 	this.w=game.AMPLADA_TOTXO; this.h=game.ALÇADA_TOTXO;         // mides
 	this.color=color;
+	this.tocat=false;
 }
 
 Totxo.prototype.draw = function(ctx){
@@ -473,7 +473,7 @@ Mur.prototype.construir=function (n) {
 Mur.prototype.draw = function(ctx){
 	for(var i=0; this.totxos.length>i; i++){
 		var totxo = this.totxos[i];
-		totxo.draw(ctx);
+		if(!totxo.tocat)totxo.draw(ctx);
 	}
 
 }
@@ -495,9 +495,9 @@ Game.prototype.llegirNivells = function(){ //Index1
 			totxos: [
 				"           ",
 				"           ",
-				" p         ",
-				" ttttt     ",
-				" ccccccc   ",
+				"     p     ",
+				"   ttttt   ",
+				"  ccccccc  ",
 				" vvvvvvvvv ",
 				" eeeeeeeee ",
 				" lllllllll ",
@@ -518,7 +518,7 @@ Game.prototype.llegirNivells = function(){ //Index1
 				d: "#FB4" // dorat
 			},
 			totxos: [
-				"",
+				" ",
 				" ddd ",
 				" pppp ",
 				" ttttt ",
