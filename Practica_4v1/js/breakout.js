@@ -2,7 +2,7 @@
 
 
 function Game(mode,level){
-	this.AMPLADA_TOTXO=20; this.ALÇADA_TOTXO=20; // MIDES DEL TOTXO EN PÍXELS
+	this.AMPLADA_TOTXO=50; this.ALÇADA_TOTXO=25; // MIDES DEL TOTXO EN PÍXELS
 	this.canvas,  this.context;       // context per poder dibuixar en el Canvas
   	this.width, this.height;          // mides del canvas
 	this.NIVELLS= new Array();
@@ -184,12 +184,10 @@ if(!Utilitats.executeOnce) {
 
 }
 Game.prototype.inicialitzar = function(nivell){
-	
-	
 	this.canvas = document.getElementById("game");
-    this.width = this.AMPLADA_TOTXO*25;  // Amplada de Totxos del Canvas
+    this.width = this.AMPLADA_TOTXO*20;  // Amplada de Totxos del Canvas
 	this.canvas.width = this.width;
-    this.height = this.ALÇADA_TOTXO*35; // Altura de Totxos del Canvas
+    this.height = this.ALÇADA_TOTXO*30; // Altura de Totxos del Canvas
 	this.canvas.height =this.height;
     this.context = this.canvas.getContext("2d");
 
@@ -294,7 +292,7 @@ Paddle.prototype.draw = function(ctx){
 
 ///////////////////////////////////    Pilota   //////////////////////////////////
 function Ball(){
-    this.x = 250; this.y = 600;         // posició del centre de la pilota
+    this.x = 500; this.y = 670;         // posició del centre de la pilota
     this.vx = 300;  this.vy = 310;  // velocitat = 300 píxels per segon, cal evitar els 45 graus en el check!!
 	this.radi = 10;                 // radi de la pilota
 	this.color = "#333";  // gris fosc
@@ -435,8 +433,9 @@ Ball.prototype.update = function(dt){
 		// Xoc mur inferior (-1 Life)
 
 		if(this.y>=(game.canvas.height-game.paddle.height)) {
-			this.x=250;
-			this.y=600;
+			this.x=500;
+			this.y=670;
+
 			game.loseCondition++;
 			game.start=false;
 			if(game.loseCondition==1) {
@@ -628,12 +627,14 @@ Game.prototype.llegirNivells = function(){ //Index1
 				p: "#BBB" // plata
 		},
 	totxos: [
-		"           ",
-		"           ",
-		"   p  p    p   ",
-		"      t  t   t t  t ",
-		"    c c  c c    cc",
-		"     r r  r r r "
+		"          ",
+		"          ",
+		"         p     ",
+		"       ttttt   ",
+		"      ccccccc  ",
+		"     vvvvvvvvv ",
+		"     eeeeeeeee ",
+		"     l l l l l "
 	]
 },
 		{
@@ -651,17 +652,40 @@ Game.prototype.llegirNivells = function(){ //Index1
 			},
 			totxos: [
 				"",
-				" ddd ",
-				" pppp ",
-				"  ttttt ",
-				"   cccccc ",
-				"    vvvvvvv ",
+				"     ddd ",
+				"     pppp ",
+				"     ttttt ",
+				"     cccccc ",
+				"     vvvvvvv ",
 				"     eeeeeeee ",
-				"      lllllllll ",
-				"       rrrrrrrrrr ",
-				"        ggggggggggg ",
-				"         bbbbbbbbbbbb ",
-				"          ddddddddddddd "
+				"     bbbbbbbbb ",
+			]
+		},
+		{
+			colors: {
+				b: "#FFF", // blanc
+				n: "#00", // negro
+				r: "#F99", // rosa
+				f: "#900", // rosa fosc
+				g: "#FF0", // groc
+				t: "#F77", // taronja
+				c: "#4CF", // blue cel
+				v: "#8D1", // verd
+				e: "#D30", // vermell
+				l: "#00D", // blau
+				p: "#BBB", // plata
+				d: "#FB4" // dorat
+			},
+			totxos: [
+				"",
+				"       l     b ",
+				"        l   e",
+				"       lllbbbb ",
+				"      l lee ee",
+				"     bbbbbbbbbbb",
+				"     e eeeeeee e",
+				"     b b     b b",
+				"        ee ee"
 			]
 		},
 		{
@@ -679,17 +703,14 @@ Game.prototype.llegirNivells = function(){ //Index1
 			},
 			totxos: [
 				"",
-				"     ddddddddddddddd ",
-				"     pppp       pppp ",
-				"     tttt       tttt ",
-				"     ccccccccccccccc ",
-				"     vvvv       vvvv ",
-				"     eeee       eeee ",
-				"     llll       llll ",
-				"     rrrrrrrrrrrrrrr ",
-				"         ggggggg     ",
-				"       bbbbbbbbbbb   ",
-				"     ddddddddddddddd "
+				"  ddddddddddddddd ",
+				"  pppp       pppp ",
+				"  ccccccccccccccc ",
+				"  vvvv       vvvv ",
+				"  rrrrrrrrrrrrrrr ",
+				"      ggggggg     ",
+				"    bbbbbbbbbbb   ",
+				"  ddddddddddddddd "
 			]
 		},
 		{
@@ -699,29 +720,30 @@ Game.prototype.llegirNivells = function(){ //Index1
 				r: "#F99", // rosa
 				f: "#900", // rosa fosc
 				g: "#FF0", // groc
+
 			},
 			totxos: [
 				"",
-				"           nnn",
-				"         nnrrrnn",
-				"        nrrrrrrrn",
-				"       nrrrrrrrrrn",
-				"       nrbnrrrbnrn",
-				"      nrfnnrrrnnfrn",
-				"      nrffrrnrrffrn",
-				"      nrrrrrrrrrrrn",
-				"      nrrrrrrrrrrrn",
-				"       nnrrnnnrrnn",
-				"       ngnngggnngn",
-				"       ngggggggggn",
-				"        nnnnnnnnn",
-				"        ngggggggn",
-				"         ngggggn",
-				"         ngggggn",
-				"          ngggn",
-				"          ngggn",
-				"           ngn",
-				"            n"
+				"         nnn",
+				"       nnrrrnn",
+				"      nrrrrrrrn",
+				"     nrrrrrrrrrn",
+				"     nrbnrrrbnrn",
+				"    nrfnnrrrnnfrn",
+				"    nrffrrnrrffrn",
+				"    nrrrrrrrrrrrn",
+				"    nrrrrrrrrrrrn",
+				"     nnrrnnnrrnn",
+				"     ngnngggnngn",
+				"     ngggggggggn",
+				"      nnnnnnnnn",
+				"      ngggggggn",
+				"       ngggggn",
+				"       ngggggn",
+				"        ngggn",
+				"        ngggn",
+				"         ngn",
+				"          n"
 			]
 		},
 		{
@@ -734,30 +756,29 @@ Game.prototype.llegirNivells = function(){ //Index1
 			},
 			totxos: [
 				"",
-				"",
-				"",
-				"       nnnn",
-				"      noooon",
-				"     noooooon       n",
-				"     noooooon      nrn",
-				"    noooooooon     nrrn",
-				"   noooobnooon     nrrn",
-				"   noooonnoooon   nrrgrn",
-				"   noooonnoooon   nrggrn",
-				"    noooooooooon   ngnn",
-				"     nnooooooooon noon",
-				"       nnnoonooonnoon",
-				"        nggnooooonoon",
-				"        ngggnnooonon",
-				"       nbngggooonnn",
-				"        nnnggooonn",
-				"           nnnoon",
-				"            nbobn",
-				"             nnnn",
+				"    nnnn",
+				"   noooon",
+				"  noooooon       n",
+				"  noooooon      nrn",
+				" noooooooon     nrrn",
+				"noooobnooon     nrrn",
+				"noooonnoooon   nrrgr",
+				"noooonnoooon   nrggr",
+				" noooooooooon   ngn",
+				"  nnooooooooon noon",
+				"    nnnoonooonnoon",
+				"     nggnooooonoon",
+				"     ngggnnooonon",
+				"    nbngggooonnn",
+				"     nnnggooonn",
+				"        nnnoon",
+				"         nbobn",
+				"          nnnn",
 				"",
 				""
 			]
-		},{
+		},
+		{
 			colors: {
 				g: "#0F0", // verd
 				b: "#FFF", // blanc
@@ -767,31 +788,30 @@ Game.prototype.llegirNivells = function(){ //Index1
 				m: "#911", // marró
 			},
 			totxos: [
-
-				"         nnnnnn",
-				"        nnggggnn",
-				"       nnggggggnn",
-				"      nnggggggggnn",
-				"      ngnyyyyyyngn",
-				"      nnyyyyyyyynn",
-				"     nnyynyyyynyynn",
-				"   nnnnynyyyynnnynnnn",
-				"   nccnnyyyynncnynccn",
-				"    nnnnyynnnccnynnn",
-				"     nynnnnncnnnnyn",
-				"     nynbnnccnnbnyn",
-				"     nnncnbccbncnnn",
-				"      nnnccccccnnn",
-				"       nnnnnnnnnn",
-				"     nngngggggngnn",
-				"    nggngggggggnggn",
-				"   nccnngggggggnnccn",
-				"    nncngnnyynngncnn",
-				"     nnnggnyynggnnn",
-				"       nnnggggnnn",
-				"      nmmmnnnnmmmn",
-				"      nmmnn  nnmmn",
-				"       nnn    nnn"
+				"       nnnnnn",
+				"      nnggggnn",
+				"     nnggggggnn",
+				"    nnggggggggnn",
+				"    ngnyyyyyyngn",
+				"    nnyyyyyyyynn",
+				"   nnyynyyyynyynn",
+				" nnnnynyyyynnnynnnn",
+				" nccnnyyyynncnynccn",
+				"  nnnnyynnnccnynnn",
+				"   nynnnnncnnnnyn",
+				"   nynbnnccnnbnyn",
+				"   nnncnbccbncnnn",
+				"    nnnccccccnnn",
+				"     nnnnnnnnnn",
+				"   nngngggggngnn",
+				"  nggngggggggnggn",
+				" nccnngggggggnnccn",
+				"  nncngnnyynngncnn",
+				"   nnnggnyynggnnn",
+				"     nnnggggnnn",
+				"    nmmmnnnnmmmn",
+				"    nmmnn  nnmmn",
+				"     nnn    nnn"
 			]
 		},
 		{
@@ -804,75 +824,32 @@ Game.prototype.llegirNivells = function(){ //Index1
 			},
 			totxos: [
 				"",
-				"      n   nnnnn",
-				"      gn nngggggnn",
-				"      ngngggggggggn",
-				"      gnggggggggggn",
-				"      ngggggggggggggn",
-				"      ngggggggggggggn",
-				"      ngggggggnnbgggonnn",
-				"      ngggggggnbnggoobon",
-				"      ngggggggnnnggoooon",
-				"      nngggggrrgggoooonn",
-				"       nngggggggggggnnn",
-				"   nnn   nngggggggnn",
-				"   nggnnnggngggnnnn",
-				"  ngggggggggggggn",
-				"  nggggggggnggggn",
-				"  nggggggggnggggn",
-				"   ngggnggngggggn",
-				"   nggggnngggggnn",
-				"    nggggggggggn",
-				"     ngggggggggn",
-				"      ngggggggn",
-				"       nonnnonnn",
-				"      nooonoooon",
-				"       nnn nnnnn"
+				"    n   nnnnn",
+				"    gn nngggggnn",
+				"    ngngggggggggn",
+				"    gnggggggggggn",
+				"    ngggggggggggggn",
+				"    ngggggggggggggn",
+				"    ngggggggnnbgggonn",
+				"    ngggggggnbnggoobo",
+				"    ngggggggnnnggoooo",
+				"    nngggggrrgggoooon",
+				"     nngggggggggggnn",
+				" nnn   nngggggggnn",
+				" nggnnnggngggnnnn",
+				"gggggggggggggn",
+				"ggggggggnggggn",
+				"ggggggggnggggn",
+				"ngggnggngggggn",
+				"nggggnngggggnn",
+				" nggggggggggn",
+				"  ngggggggggn",
+				"   ngggggggn",
+				"    nonnnonnn",
+				"   nooonoooon",
+				"    nnn nnnnn"
 			]
-		},
-		{
-			colors: {
-				b: "#FFF", // blanc
-				n: "#000", // negro
-				a: "#33F", // azul
-				c: "#99F", // azul claro
-			},
-			totxos: [
-				"       nnnnnnnnnn",
-				"      nnbbbbbbbbnn",
-				"     nbbbbbbbbbbbbn",
-				"     nbbbbbbbbbbbbn",
-				"    nbbbbbbbbbbbbbbn",
-				"    nbbnnnbbbbbnnnbbn",
-				"    nbbnnnbbbbbnnnbbn",
-				"    nbbnnnbbnbbnnnbbn",
-				"     nbbbbbnnnbbbbbn",
-				"    nnbnbbbbbbbbbnbnn",
-				"    nbbnnnnnnnnnnnbbn",
-				"    nbbbnbnbnbnbnbbbn",
-				"     nnbbnnnnnnnbbnn",
-				"    nnnnnbbbbbbbnnnnn",
-				"   nannnnnnnnnnnnnnnan",
-				"  nnanccnbbbnbbbnccnann",
-				"  naaanccnnnbnnnccnaaan",
-				" naannannnbbnbbnnnannaan",
-				" naaaanaanbbbbbnaanaaaan",
-				" naaaaanannbbbnnanaaaaan",
-				"  naaanaanbbbbbnaanaaan",
-				"   nnanaannnnnnnaanann",
-				"    nnnaannnnnnnaannn",
-				"    nnnnnnnnnnnnnnnnn",
-				"   nnnnnnnnnnnnnnnnnnn",
-				"   nnnnnnnnnnnnnnnnnnn",
-				"    nnnnnnnn nnnnnnnn",
-				"     nnnnnn   nnnnnn",
-				"  nnnbbbbbn   nbbbbbnnn",
-				"  nbbbbbbnn   nnbbbbbbn",
-				"   nnnnnn       nnnnnn",
-				""
-			]
-		}
-	];
+		}];
 }
 
 

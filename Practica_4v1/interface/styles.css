@@ -4,6 +4,7 @@
     border-style:outset;
     border-width: 5px;
     border-color: black;
+    border-radius: 20px;
 }
 #joc{
     position:relative;
@@ -15,6 +16,7 @@
     border-bottom-width: 0;
     display: block;
     margin: 0 auto;
+    border-radius: 10px;
 }
 #rellotge{
     margin-left: 40%;
