@@ -275,7 +275,7 @@ function Paddle(){
 		this.x = game.width/2 - this.width/2;
     this.y = game.height-50;
 		this.vx = 10;
-		this.color = "#0f0";
+		this.color = "#000";
 }
 Paddle.prototype.update = function(){
 		if (game.key.RIGHT.pressed) {        

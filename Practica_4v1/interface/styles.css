@@ -11,7 +11,7 @@
 }
 #game {
     background-color: transparent;
-    border: #666 50px solid;
+    border: #666 20px solid;
     border-bottom-width: 0;
     display: block;
     margin: 0 auto;
@@ -22,7 +22,7 @@
 
 body{
     color:black;
-    background-image: url(../data/abstractbg.jpg);
+    background-image: url(../data/retrobackground.jpg);
     font-family: "Comic Sans MS";
     font-size:15px;
 }
