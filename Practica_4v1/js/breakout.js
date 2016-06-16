@@ -872,7 +872,7 @@ Utilitats.deleteBrick = function(index){
 	$( "#broken" ).append(game.broken);
 	console.log("Totxos destruits: "+game.broken+"/"+(game.mur.totxos.length-1));
 	game.mur.totxos[index].tocat=true;
-	if(game.broken>=(game.mur.totxos.length-1)) Utilitats.levelCompleted();
+	if(game.broken>=(game.mur.totxos.length)) Utilitats.levelCompleted();
 }
 Utilitats.levelCompleted = function(){
 	game.score+=game.broken;
