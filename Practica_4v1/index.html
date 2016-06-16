@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Breakout amb canvas</title>
+    <link rel="stylesheet" type="text/css" href="./interface/styles.css">
+</head>
+
+<body>
+
+<div id="menu">
+    <div id="main">
+    <div id="head">
+        <h1>Breakout Master</h1>
+        <h3>by David Junquero, Jan Jimenez & Joan Figueres</h3>
+    </div>
+        <button id="new_game">New Game</button>
+        <br>
+        <br>
+        <button id="settingsButton">Settings</button>
+        <br>
+        <br>
+        <button id="instructionsButton">Instructions</button>
+    </div>
+
+    <div id="gameMode">
+        <button id="back_gameMode" style="float:right">X</button>
+        <br>
+        <h2>Select a game mode</h2>
+        <input type="image" id="normal" name="normal" value="normal" src="data/banner.normal.png" style="height:200px;width:600px"/>
+        <br>
+        <input type="image" id="timed" name="timed" value="timed" src="data/banner.timed.png"style="height:200px;width:600px"/>
+        <br>
+        <input type="image" id="survival" name="survival" value="survival" src="data/banner.survival.png"style="height:200px;width:600px"/>
+    </div>
+
+    <div id="settings">
+        <button id=back_settings style="float:right">X</button>
+        <br>
+        <h2>Settings</h2>
+        <br><br>
+        <input type="checkbox"id="naturalReflection">  Natural Reflection (Snell's law)<br>
+</div>
+
+    <div id="instructions">
+        <button id="back_instructions" style="float:right">X</button>
+        <br>
+        <h1>Instructions</h1>
+        <br><br>
+        <img src="data/ins1.png" alt="Instruction 1" style="width:800px;height:400px;">
+        <p> Use [<-] & [->] keys to move the racket </p>
+        <img src="data/ins2.png" alt="Instruction 2" style="width:800px;height:400px;">
+        <p> > Avoid the ball passing through the racket's height. For each time it does, you lose a life. </p>
+
+        <p> > Press Spacebar to start the game. It will only start if your have entered a nickname </p>
+        <p> > If the ball touches the bottom of the game panel, it will stop.
+        <br>Press Spacebar to place it above the racket and then press Spacebar again to continue</p>
+        <p> > When the game is over, your score will be displayed beneath</p>
+        <br>
+        <h3>Gamemodes</h3>
+    <ul>
+        <li><b>Normal Mode:</b> The game advances through all the levels sorted by difficulty. You can choose to start in whichever level you like</li>
+        <br>
+        <li><b>Timed Mode:</b> Levels are ranom. Each level has a time designated. You must complete the level before the time runs out</li>
+        <br>
+        <li><b>Survival Mode:</b> There's only 1 block. The game gets harder as time passes.</li>
+    </ul>
+    </div>
+
+</div>
+
+
+<div id="principal">
+
+    <div id="header">
+
+        <div id="level-selector">
+            Level Selector:
+            <form oninput="amount.value=rangeInput.value">
+                <select id="levelSelector">
+                    <option value=2>1</option>
+                    <option value=3>2</option>
+                    <option value=4>3</option>
+                    <option value=5>4</option>
+                    <option value=6>5</option>
+                    <option value=7>6</option>
+                    <option value=8>7</option>
+                    <option value=9>8</option>
+                </select>
+            </form>
+        </div>
+        <div id="header-middle">
+            Nickname:
+            <input type="text" id="nick">
+            </br>
+           Blocks destroyed:<div id="broken"> 0 </div>
+            </br>
+            Attempts remaining:
+            <img id="heart1" src="./data/heart.png">
+            <img id="heart2" src="./data/heart.png">
+            <img id="heart3" src="./data/heart.png">
+            <img id="heart4" src="./data/heart.png">
+        </div>
+        <div id="ranking">
+            Top 3<br>
+            <div id="Top_1"></div><br>
+            <div id="Top_2"></div><br>
+            <div id="Top_3"></div>
+        </div>
+        <button id="back_canvas" style="float:left">X</button>
+    </div>
+
+  <div id="joc">
+    <canvas id="game"></canvas>
+  </div>
+
+    <div id="rellotge">
+        <img id="minut" src="data/rellotge/0.jpg">
+        <img src="data/rellotge/dos_puntos.png" width="45" height="60">
+        <img id="seg1" src="data/rellotge/0.jpg">
+        <img id="seg2" src="data/rellotge/0.jpg">
+    </div>
+</div>
+<div id="game_over">
+    <div id="img_wrap">
+        <img id="go1" src="./data/GameOver/go1.jpg">
+    </div>
+<div id="results"></div>
+</div>
+<script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/breakout.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+#principal{
+    width: 1200px;
+    margin: 0 auto;
+    border-style:outset;
+    border-width: 5px;
+    border-color: black;
+}
+#joc{
+    position:relative;
+    margin-top: 20px;
+}
+#game {
+    background-color: transparent;
+    border: #666 50px solid;
+    border-bottom-width: 0;
+    display: block;
+    margin: 0 auto;
+}
+#rellotge{
+    margin-left: 40%;
+}
+
+body{
+    color:black;
+    background-image: url(../data/abstractbg.jpg);
+    font-family: "Comic Sans MS";
+    font-size:15px;
+}
+
+
+#gameMode{
+    border-style:outset;
+    border-width: 5px;
+    text-align: center;
+    width: 50%;
+    margin: 0 auto;
+}
+
+#instructions{
+    border-style:outset;
+    border-width: 5px;
+    text-align: center;
+    font-size:17px;
+    width: 50%;
+    margin: 0 auto;
+}
+
+#settings{
+    font-size: 30px;
+    border-style:outset;
+    border-width: 5px;
+    text-align: center;
+    width: 50%;
+    margin: 0 auto;
+}
+
+input[type=checkbox] {
+    transform: scale(3);
+    -ms-transform: scale(3);
+    -webkit-transform: scale(3);
+    padding: 20px;
+}
+
+#main{
+    width: 50%;
+    margin: 0 auto;
+    font-size: x-large;
+}
+
+
+#header {
+    padding: 25px 10px;
+    border-bottom: 0;
+    overflow: no-content;
+    min-width: 600px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+div#header div {
+    display: inline-block;
+    padding: 1% 0;
+    margin: 0 2%;
+    text-align: center;
+    font-size: 2em;
+}
+
+#level-selector {
+    color: #08a3d9;
+    width: 20%;
+    border-color: red;
+}
+
+#header-middle {
+    width: 40%;
+    border-color: green;
+}
+
+#ranking {
+    width: 20%;
+    border-color: blue;
+}
+#menu {
+    padding: 25px 10px;
+    border-bottom:0;
+    overflow: no-content;
+    min-width: 1000px;
+    background-color: transparent;
+    color: black;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 5px;
+
+}
+#game_over{
+    min-width: 600px;
+    margin: 0 auto;
+    margin-left: 15%;
+}
+#img_wrap{
+    margin: 0 auto;
+    margin-left: 15%;
+}
+#ranking{
+    font-size:2px;
+}
+#results{
+    margin-left: 35%;
+}
