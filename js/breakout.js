@@ -185,11 +185,26 @@ if(!Utilitats.executeOnce) {
 }
 Game.prototype.inicialitzar = function(nivell){
 	
-	
+	var amplada;
+	var alçada;
+	switch (nivell){
+		case 0:
+		case 1:
+		case 2:
+		case 3:{
+				amplada=15;
+				alçada=25;
+		}break;
+		default:{
+				amplada=25;
+				alçada=35;
+		}break;
+	}
+
 	this.canvas = document.getElementById("game");
-    this.width = this.AMPLADA_TOTXO*25;  // Amplada de Totxos del Canvas
+    this.width = this.AMPLADA_TOTXO*amplada;  // Amplada de Totxos del Canvas
 	this.canvas.width = this.width;
-    this.height = this.ALÇADA_TOTXO*35; // Altura de Totxos del Canvas
+    this.height = this.ALÇADA_TOTXO*alçada; // Altura de Totxos del Canvas
 	this.canvas.height =this.height;
     this.context = this.canvas.getContext("2d");
 
@@ -291,7 +306,7 @@ Paddle.prototype.draw = function(ctx){
 
 ///////////////////////////////////    Pilota   //////////////////////////////////
 function Ball(){
-    this.x = 250; this.y = 600;         // posició del centre de la pilota
+    this.x = 150; this.y = 300;         // posició del centre de la pilota
     this.vx = 300;  this.vy = 310;  // velocitat = 300 píxels per segon, cal evitar els 45 graus en el check!!
 	this.radi = 10;                 // radi de la pilota
 	this.color = "#333";  // gris fosc
@@ -432,8 +447,8 @@ Ball.prototype.update = function(dt){
 		// Xoc mur inferior (-1 Life)
 
 		if(this.y>=(game.canvas.height-game.paddle.height)) {
-			this.x=250;
-			this.y=600;
+			this.x=150;
+			this.y=300;
 			game.loseCondition++;
 			game.start=false;
 			if(game.loseCondition==1) {
@@ -627,10 +642,10 @@ Game.prototype.llegirNivells = function(){ //Index1
 	totxos: [
 		"           ",
 		"           ",
-		"   p  p    p   ",
-		"      t  t   t t  t ",
-		"    c c  c c    cc",
-		"     r r  r r r "
+		"  p  p    p   ",
+		" t  t   t t  t ",
+		" c c  c c    cc",
+		"  r r  r r r "
 	]
 },
 		{
@@ -650,15 +665,15 @@ Game.prototype.llegirNivells = function(){ //Index1
 				"",
 				" ddd ",
 				" pppp ",
-				"  ttttt ",
-				"   cccccc ",
-				"    vvvvvvv ",
-				"     eeeeeeee ",
-				"      lllllllll ",
-				"       rrrrrrrrrr ",
-				"        ggggggggggg ",
-				"         bbbbbbbbbbbb ",
-				"          ddddddddddddd "
+				" ttttt ",
+				" cccccc ",
+				" vvvvvvv ",
+				" eeeeeeee ",
+				" lllllllll ",
+				" rrrrrrrrrr ",
+				" ggggggggggg ",
+				" bbbbbbbbbbbb ",
+				" ddddddddddddd "
 			]
 		},
 		{
@@ -676,17 +691,17 @@ Game.prototype.llegirNivells = function(){ //Index1
 			},
 			totxos: [
 				"",
-				"     ddddddddddddddd ",
-				"     pppp       pppp ",
-				"     tttt       tttt ",
-				"     ccccccccccccccc ",
-				"     vvvv       vvvv ",
-				"     eeee       eeee ",
-				"     llll       llll ",
-				"     rrrrrrrrrrrrrrr ",
-				"         ggggggg     ",
-				"       bbbbbbbbbbb   ",
-				"     ddddddddddddddd "
+				" ddddddddddddd ",
+				" ppp       ppp ",
+				" ttt       ttt ",
+				" ccccccccccccc ",
+				" vvv       vvv ",
+				" eee       eee ",
+				" lll       lll ",
+				" rrrrrrrrrrrrr ",
+				"     ggggg     ",
+				"   bbbbbbbbb   ",
+				" ddddddddddddd "
 			]
 		},
 		{
