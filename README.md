@@ -2,6 +2,13 @@
 Breakout,
 alerts suck
 
+# **Changelog v1.1**
+
+* **New Pixel Art levels**
+ * All new levels are available in Normal and Timed mode
+* **Expanded canvas size**
+ <br><br><br><br>
+
 ## **Changelog v1.0.1**
 
 * Tweaked interface
