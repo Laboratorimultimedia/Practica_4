@@ -212,8 +212,11 @@ Game.prototype.inicialitzar = function(nivell){
 			else if (e.keyCode == e.data.game.key.SPACEBAR.code) {{}
 				var user=$("#nick").val();
 				console.log("User Input= "+user);
-				if(user==""){}
+				if(user==""){
+					$("#user-missing").show();
+				}
 				else {
+					$("#user-missing").hide();
 					game.user=user;
 					game.start = true;
 				}
