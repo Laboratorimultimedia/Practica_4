@@ -2,6 +2,10 @@
 Breakout,
 alerts suck
 
+## **Changelog v1.1.1**
+
+* Canvas size now dinamically adapts to the level size (predefined dimensions) (currently 2 available).
+
 # **Changelog v1.1**
 
 * **New Pixel Art levels**
