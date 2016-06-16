@@ -2,7 +2,7 @@
 
 
 function Game(mode,level){
-	this.AMPLADA_TOTXO=40; this.ALÇADA_TOTXO=20; // MIDES DEL TOTXO EN PÍXELS
+	this.AMPLADA_TOTXO=20; this.ALÇADA_TOTXO=20; // MIDES DEL TOTXO EN PÍXELS
 	this.canvas,  this.context;       // context per poder dibuixar en el Canvas
   	this.width, this.height;          // mides del canvas
 	this.NIVELLS= new Array();
@@ -57,16 +57,16 @@ function Game(mode,level){
 					switch (game.currentLv) {
 						case 0:
 						{
-							this.segons = 30;
+							this.segons = 60;
 							this.seg1 = 0;
-							this.seg2 = 3;
-							this.min = 0;
+							this.seg2 = 0;
+							this.min = 1;
 							game.resetTime = false;
 						};break;
 
 						case 1:
 						{
-							this.segons = 60;
+							this.segons = 120;
 							this.seg1 = 0;
 							this.seg2 = 0;
 							this.min = 1;
@@ -75,15 +75,6 @@ function Game(mode,level){
 						case 2:
 
 						{
-							this.segons = 150;
-							this.seg1 = 0;
-							this.seg2 = 3;
-							this.min = 2;
-							game.resetTime = false;
-						};break;
-
-						case 3:
-						{
 							this.segons = 180;
 							this.seg1 = 0;
 							this.seg2 = 0;
@@ -91,12 +82,53 @@ function Game(mode,level){
 							game.resetTime = false;
 						};break;
 
-						case 4:
+						case 3:
 						{
 							this.segons = 240;
 							this.seg1 = 0;
 							this.seg2 = 0;
 							this.min = 4;
+							game.resetTime = false;
+						};break;
+
+						case 4:
+						{
+							this.segons = 300;
+							this.seg1 = 0;
+							this.seg2 = 0;
+							this.min = 5;
+							game.resetTime = false;
+						};break;
+						case 5:
+						{
+							this.segons = 360;
+							this.seg1 = 0;
+							this.seg2 = 0;
+							this.min = 6;
+							game.resetTime = false;
+						};break;
+						case 6:
+						{
+							this.segons = 420;
+							this.seg1 = 0;
+							this.seg2 = 0;
+							this.min = 7;
+							game.resetTime = false;
+						};break;
+						case 7:
+						{
+							this.segons = 450;
+							this.seg1 = 0;
+							this.seg2 = 3;
+							this.min = 8;
+							game.resetTime = false;
+						};break;
+						case 8:
+						{
+							this.segons = 600;
+							this.seg1 = 0;
+							this.seg2 = 0;
+							this.min = 10;
 							game.resetTime = false;
 						};break;
 
@@ -155,9 +187,9 @@ Game.prototype.inicialitzar = function(nivell){
 	
 	
 	this.canvas = document.getElementById("game");
-    this.width = this.AMPLADA_TOTXO*15;  // 15 totxos com a màxim d'amplada
+    this.width = this.AMPLADA_TOTXO*25;  // Amplada de Totxos del Canvas
 	this.canvas.width = this.width;
-    this.height = this.ALÇADA_TOTXO*25;
+    this.height = this.ALÇADA_TOTXO*35; // Altura de Totxos del Canvas
 	this.canvas.height =this.height;
     this.context = this.canvas.getContext("2d");
 
@@ -259,7 +291,7 @@ Paddle.prototype.draw = function(ctx){
 
 ///////////////////////////////////    Pilota   //////////////////////////////////
 function Ball(){
-    this.x = 300; this.y = 400;         // posició del centre de la pilota
+    this.x = 250; this.y = 600;         // posició del centre de la pilota
     this.vx = 300;  this.vy = 310;  // velocitat = 300 píxels per segon, cal evitar els 45 graus en el check!!
 	this.radi = 10;                 // radi de la pilota
 	this.color = "#333";  // gris fosc
@@ -400,8 +432,8 @@ Ball.prototype.update = function(dt){
 		// Xoc mur inferior (-1 Life)
 
 		if(this.y>=(game.canvas.height-game.paddle.height)) {
-			this.x=300;
-			this.y=400;
+			this.x=250;
+			this.y=600;
 			game.loseCondition++;
 			game.start=false;
 			if(game.loseCondition==1) {
@@ -595,10 +627,10 @@ Game.prototype.llegirNivells = function(){ //Index1
 	totxos: [
 		"           ",
 		"           ",
-		" p  p    p   ",
-		" t  t   t t  t ",
-		" c c  c c    cc",
-		" r r  r r r "
+		"   p  p    p   ",
+		"      t  t   t t  t ",
+		"    c c  c c    cc",
+		"     r r  r r r "
 	]
 },
 		{
@@ -618,15 +650,15 @@ Game.prototype.llegirNivells = function(){ //Index1
 				"",
 				" ddd ",
 				" pppp ",
-				" ttttt ",
-				" cccccc ",
-				" vvvvvvv ",
-				" eeeeeeee ",
-				" lllllllll ",
-				" rrrrrrrrrr ",
-				" ggggggggggg ",
-				" bbbbbbbbbbbb ",
-				" ddddddddddddd "
+				"  ttttt ",
+				"   cccccc ",
+				"    vvvvvvv ",
+				"     eeeeeeee ",
+				"      lllllllll ",
+				"       rrrrrrrrrr ",
+				"        ggggggggggg ",
+				"         bbbbbbbbbbbb ",
+				"          ddddddddddddd "
 			]
 		},
 		{
@@ -644,17 +676,17 @@ Game.prototype.llegirNivells = function(){ //Index1
 			},
 			totxos: [
 				"",
-				"ddddddddddddddd ",
-				"pppp       pppp ",
-				"tttt       tttt ",
-				"ccccccccccccccc ",
-				"vvvv       vvvv ",
-				"eeee       eeee ",
-				"llll       llll ",
-				"rrrrrrrrrrrrrrr ",
-				"    ggggggg     ",
-				"  bbbbbbbbbbb   ",
-				"ddddddddddddddd "
+				"     ddddddddddddddd ",
+				"     pppp       pppp ",
+				"     tttt       tttt ",
+				"     ccccccccccccccc ",
+				"     vvvv       vvvv ",
+				"     eeee       eeee ",
+				"     llll       llll ",
+				"     rrrrrrrrrrrrrrr ",
+				"         ggggggg     ",
+				"       bbbbbbbbbbb   ",
+				"     ddddddddddddddd "
 			]
 		},
 		{
@@ -667,26 +699,174 @@ Game.prototype.llegirNivells = function(){ //Index1
 			},
 			totxos: [
 				"",
-				"      nnn",
-				"    nnrrrnn",
-				"   nrrrrrrrn",
-				"  nrrrrrrrrrn",
-				"  nrbnrrrbnrn",
-				" nrfnnrrrnnfrn",
-				" nbffrrnrrffrn",
-				" nrrrrrrrrrrrn",
-				" nrrrrrrrrrrrn",
-				"  nnrrnnnrrnn",
-				"  ngnngggnngn",
-				"  ngggggggggn",
-				"   nnnnnnnnn",
-				"   ngggggggn",
-				"    ngggggn",
-				"    ngggggn",
-				"     ngggn",
-				"     ngggn",
-				"      ngn",
-				"       n"
+				"           nnn",
+				"         nnrrrnn",
+				"        nrrrrrrrn",
+				"       nrrrrrrrrrn",
+				"       nrbnrrrbnrn",
+				"      nrfnnrrrnnfrn",
+				"      nrffrrnrrffrn",
+				"      nrrrrrrrrrrrn",
+				"      nrrrrrrrrrrrn",
+				"       nnrrnnnrrnn",
+				"       ngnngggnngn",
+				"       ngggggggggn",
+				"        nnnnnnnnn",
+				"        ngggggggn",
+				"         ngggggn",
+				"         ngggggn",
+				"          ngggn",
+				"          ngggn",
+				"           ngn",
+				"            n"
+			]
+		},
+		{
+			colors: {
+				b: "#FFF", // blanc
+				n: "#000", // negro
+				r: "#F20", // vermell
+				o: "#F94", // light orange
+				g: "#FF2", // taronja clar
+			},
+			totxos: [
+				"",
+				"",
+				"",
+				"       nnnn",
+				"      noooon",
+				"     noooooon       n",
+				"     noooooon      nrn",
+				"    noooooooon     nrrn",
+				"   noooobnooon     nrrn",
+				"   noooonnoooon   nrrgrn",
+				"   noooonnoooon   nrggrn",
+				"    noooooooooon   ngnn",
+				"     nnooooooooon noon",
+				"       nnnoonooonnoon",
+				"        nggnooooonoon",
+				"        ngggnnooonon",
+				"       nbngggooonnn",
+				"        nnnggooonn",
+				"           nnnoon",
+				"            nbobn",
+				"             nnnn",
+				"",
+				""
+			]
+		},{
+			colors: {
+				g: "#0F0", // verd
+				b: "#FFF", // blanc
+				n: "#000", // negre
+				y: "#FF0", // groc
+				c: "#ffc", // cara
+				m: "#911", // marró
+			},
+			totxos: [
+
+				"         nnnnnn",
+				"        nnggggnn",
+				"       nnggggggnn",
+				"      nnggggggggnn",
+				"      ngnyyyyyyngn",
+				"      nnyyyyyyyynn",
+				"     nnyynyyyynyynn",
+				"   nnnnynyyyynnnynnnn",
+				"   nccnnyyyynncnynccn",
+				"    nnnnyynnnccnynnn",
+				"     nynnnnncnnnnyn",
+				"     nynbnnccnnbnyn",
+				"     nnncnbccbncnnn",
+				"      nnnccccccnnn",
+				"       nnnnnnnnnn",
+				"     nngngggggngnn",
+				"    nggngggggggnggn",
+				"   nccnngggggggnnccn",
+				"    nncngnnyynngncnn",
+				"     nnnggnyynggnnn",
+				"       nnnggggnnn",
+				"      nmmmnnnnmmmn",
+				"      nmmnn  nnmmn",
+				"       nnn    nnn"
+			]
+		},
+		{
+			colors: {
+				b: "#FFF", // blanc
+				n: "#000", // negro
+				r: "#F99", // rosa
+				o: "#922", // red
+				g: "#FF0", // groc
+			},
+			totxos: [
+				"",
+				"      n   nnnnn",
+				"      gn nngggggnn",
+				"      ngngggggggggn",
+				"      gnggggggggggn",
+				"      ngggggggggggggn",
+				"      ngggggggggggggn",
+				"      ngggggggnnbgggonnn",
+				"      ngggggggnbnggoobon",
+				"      ngggggggnnnggoooon",
+				"      nngggggrrgggoooonn",
+				"       nngggggggggggnnn",
+				"   nnn   nngggggggnn",
+				"   nggnnnggngggnnnn",
+				"  ngggggggggggggn",
+				"  nggggggggnggggn",
+				"  nggggggggnggggn",
+				"   ngggnggngggggn",
+				"   nggggnngggggnn",
+				"    nggggggggggn",
+				"     ngggggggggn",
+				"      ngggggggn",
+				"       nonnnonnn",
+				"      nooonoooon",
+				"       nnn nnnnn"
+			]
+		},
+		{
+			colors: {
+				b: "#FFF", // blanc
+				n: "#000", // negro
+				a: "#33F", // azul
+				c: "#99F", // azul claro
+			},
+			totxos: [
+				"       nnnnnnnnnn",
+				"      nnbbbbbbbbnn",
+				"     nbbbbbbbbbbbbn",
+				"     nbbbbbbbbbbbbn",
+				"    nbbbbbbbbbbbbbbn",
+				"    nbbnnnbbbbbnnnbbn",
+				"    nbbnnnbbbbbnnnbbn",
+				"    nbbnnnbbnbbnnnbbn",
+				"     nbbbbbnnnbbbbbn",
+				"    nnbnbbbbbbbbbnbnn",
+				"    nbbnnnnnnnnnnnbbn",
+				"    nbbbnbnbnbnbnbbbn",
+				"     nnbbnnnnnnnbbnn",
+				"    nnnnnbbbbbbbnnnnn",
+				"   nannnnnnnnnnnnnnnan",
+				"  nnanccnbbbnbbbnccnann",
+				"  naaanccnnnbnnnccnaaan",
+				" naannannnbbnbbnnnannaan",
+				" naaaanaanbbbbbnaanaaaan",
+				" naaaaanannbbbnnanaaaaan",
+				"  naaanaanbbbbbnaanaaan",
+				"   nnanaannnnnnnaanann",
+				"    nnnaannnnnnnaannn",
+				"    nnnnnnnnnnnnnnnnn",
+				"   nnnnnnnnnnnnnnnnnnn",
+				"   nnnnnnnnnnnnnnnnnnn",
+				"    nnnnnnnn nnnnnnnn",
+				"     nnnnnn   nnnnnn",
+				"  nnnbbbbbn   nbbbbbnnn",
+				"  nbbbbbbnn   nnbbbbbbn",
+				"   nnnnnn       nnnnnn",
+				""
 			]
 		}
 	];
@@ -704,7 +884,7 @@ this.lock=false;
 var executeOnce=false;
 
 Utilitats.randomLv = function(){
-	return Math.floor((Math.random() * 3)+1);
+	return Math.floor((Math.random() * 7)+1);
 }
 Utilitats.deleteBrick = function(index){
 	game.broken++;
@@ -718,7 +898,7 @@ Utilitats.levelCompleted = function(){
 	game.score+=game.broken;
 	if(game.mode==game.NORMAL_MODE){
 		game.currentLv++;
-		if(game.currentLv>4)Utilitats.gameOver();
+		if(game.currentLv>8)Utilitats.gameOver();
 		game.inicialitzar(game.currentLv);
 	}
 	else if(game.mode==game.TIMED_MODE){
@@ -767,7 +947,7 @@ Utilitats.results = function(){
 		}
 	}
 	$("#results").empty();
-	$( "#results" ).append("Puntiació Final: "+ game.score);
+	$( "#results" ).append("Puntuació Final: "+ game.score);
 	console.log("Puntuació Final: "+game.score);
 }
 
